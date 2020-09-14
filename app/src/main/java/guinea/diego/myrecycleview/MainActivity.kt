@@ -2,6 +2,8 @@ package guinea.diego.myrecycleview
 import RetrofitInitializer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -27,13 +29,15 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call<Characters>, response: Response<Characters>) {
                 val list = response.body()
                 list?.let {
+                    progressBar.visibility = View.INVISIBLE
                     confList(list)
 
                 }
             }
 
             override fun onFailure(call: Call<Characters>, t: Throwable) {
-                println("deu ruim" + t.message)
+                progressBar.visibility = View.INVISIBLE
+                errorTxt.text =  t.message
             }
         })
     }
