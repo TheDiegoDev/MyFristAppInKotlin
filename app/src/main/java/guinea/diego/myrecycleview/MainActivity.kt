@@ -3,7 +3,6 @@ import RetrofitInitializer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -27,19 +26,27 @@ class MainActivity : AppCompatActivity() {
         val call = RetrofitInitializer().characterService().list()
         call.enqueue(object : Callback<Characters> {
             override fun onResponse(call: Call<Characters>, response: Response<Characters>) {
-                val list = response.body()
-                list?.let {
-                    progressBar.visibility = View.INVISIBLE
-                    confList(list)
-
-                }
+                onResp(response)
             }
-
             override fun onFailure(call: Call<Characters>, t: Throwable) {
-                progressBar.visibility = View.INVISIBLE
-                errorTxt.text =  t.message
+                onFaild(t)
             }
         })
+    }
+
+
+    private fun onResp(response: Response<Characters>) {
+        val list = response.body()
+        list?.let {
+            progressBar.visibility = View.INVISIBLE
+            confList(list)
+
+        }
+    }
+
+    private fun onFaild(t: Throwable) {
+        progressBar.visibility = View.INVISIBLE
+        errorTxt.text = t.message
     }
 
     private fun confList(characters: Characters){
