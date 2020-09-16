@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 
         }
     }
-
+    
     private fun onFaild(t: Throwable) {
         progressBar.visibility = View.INVISIBLE
         errorTxt.text = t.message
