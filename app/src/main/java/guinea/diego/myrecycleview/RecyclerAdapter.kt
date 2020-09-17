@@ -4,6 +4,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +18,7 @@ class RecyclerAdapter(private val characters: Characters,
                       private val context: Context): RecyclerView.Adapter<RecyclerAdapter.BaseViewHolder>() {
 
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.characters, parent, false)
         return BaseViewHolder(view)
@@ -28,6 +30,7 @@ class RecyclerAdapter(private val characters: Characters,
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         val character = characters.results[position]
+        holder.bindView(characters.results[position])
         holder?.let {
             it.bindView(character)
         }
@@ -45,11 +48,16 @@ class RecyclerAdapter(private val characters: Characters,
             Glide.with(image.context)
                 .load(character.image)
                 .into(image)
-        }
 
+
+        }
         init {
-            itemView.setOnClickListener {
+            itemView.setOnClickListener{
+               // val model = adapterPosition
+                 val pos = characters.results[adapterPosition]
+                 //Toast.makeText(itemView.context, "posicion$pos",Toast.LENGTH_LONG).show()
                val intent: Intent = Intent(itemView.context, InfoCharacter::class.java)
+                intent.putExtra("persons", pos)
                context.startActivity(intent)
             }
         }
