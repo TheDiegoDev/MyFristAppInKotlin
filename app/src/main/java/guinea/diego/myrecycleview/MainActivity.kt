@@ -24,11 +24,13 @@ class MainActivity : AppCompatActivity() {
         //Llamamos a la funcion setUpRecyclerView
         setUpRecyclerView()
 
+
     }
 
     //Esta funcion se encarga de conectar con la Api y decantrse entre dos funciones segun la respuesta
     private fun setUpRecyclerView(){
         recyclerView.layoutManager = LinearLayoutManager(this)
+        //val call = CharacterRepository().getCharacters()
         val call = RetrofitInitializer(PrincipalRepo).characterService().list()
         call.enqueue(object : Callback<Characters> {
             override fun onResponse(call: Call<Characters>, response: Response<Characters>) {

@@ -3,6 +3,7 @@ package guinea.diego.myrecycleview.modelo
 import java.io.Serializable
 
 class CharacterRM(
+    val id: Int,
     val name: String,
     val species: String,
     val image: String,
