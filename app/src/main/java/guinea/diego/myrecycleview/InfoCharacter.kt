@@ -11,16 +11,19 @@ class InfoCharacter : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.info_character)
-        configPag()
+        configPage()
     }
 
-    private fun configPag(){
+    //Funcion encargada de cargar los datos del intent
+    private fun configPage(){
         val persons = intent.getSerializableExtra("persons") as CharacterRM
         name_character.text = persons.name
         raza_character.text = persons.species
         status_character.text = persons.status
         side_character.text = persons.type
         sex_character.text = persons.gender
+        //btn_location.text = persons.name
+        //btn_origin.text = persons.origin.name
         Glide.with(img_character.context)
             .load(persons.image)
             .into(img_character)

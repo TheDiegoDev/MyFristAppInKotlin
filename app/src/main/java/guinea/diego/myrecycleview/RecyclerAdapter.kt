@@ -1,6 +1,11 @@
 package guinea.diego.myrecycleview
+import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
+import android.transition.Fade
+import android.transition.Slide
+import android.transition.Transition
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,19 +23,20 @@ class RecyclerAdapter(private val characters: Characters,
                       private val context: Context): RecyclerView.Adapter<RecyclerAdapter.BaseViewHolder>() {
 
 
-
+    //Funcion encargada de la creacion del ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.characters, parent, false)
         return BaseViewHolder(view)
     }
 
+    //Funcion encargada de contar cuantos items son
     override fun getItemCount(): Int {
         return characters.results.size
     }
 
+    //Funcion encargada de montar cada elemento del recycler
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         val character = characters.results[position]
-        holder.bindView(characters.results[position])
         holder?.let {
             it.bindView(character)
         }
@@ -38,6 +44,7 @@ class RecyclerAdapter(private val characters: Characters,
 
     inner class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
+        //Funcion encargada de emparejar los elementos del layaout con los datos de la Api
         fun bindView(character: CharacterRM) {
             val title = itemView.profile_name
             val desc = itemView.profile_desc
@@ -52,13 +59,12 @@ class RecyclerAdapter(private val characters: Characters,
 
         }
         init {
+            //Evento de click en un item del recyclerView
             itemView.setOnClickListener{
-               // val model = adapterPosition
-                 val pos = characters.results[adapterPosition]
-                 //Toast.makeText(itemView.context, "posicion$pos",Toast.LENGTH_LONG).show()
-               val intent: Intent = Intent(itemView.context, InfoCharacter::class.java)
+                val pos = characters.results[adapterPosition]
+                val intent: Intent = Intent(itemView.context, InfoCharacter::class.java)
                 intent.putExtra("persons", pos)
-               context.startActivity(intent)
+                context.startActivity(intent)
             }
         }
     }

@@ -9,7 +9,14 @@ class CharacterRM(
     val status: String,
     val gender: String,
     val type: String
-    //val origin: List<String>,
-    /*val location: List<String>*/) : Serializable
+    /*val origin: OriginRM,
+    val location: LocationRM*/) : Serializable
 
 class Characters(val results: List<CharacterRM>)
+
+class OriginRM(val name: String)
+
+
+class LocationRM(val name: String)
+
+
