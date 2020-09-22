@@ -2,19 +2,16 @@ package guinea.diego.myrecycleview
 import RetrofitInitializer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import guinea.diego.myrecycleview.modelo.CharacterRM
 import guinea.diego.myrecycleview.modelo.Characters
 import guinea.diego.myrecycleview.modelo.PrincipalRepo
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.ArrayList
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     //Esta funcion se encarga de conectar con la Api y decantrse entre dos funciones segun la respuesta
     private fun setUpRecyclerView(){
         recyclerView.layoutManager = LinearLayoutManager(this)
-        //val call = CharacterRepository().getCharacters()
+
         val call = RetrofitInitializer(PrincipalRepo).characterService().list()
         call.enqueue(object : Callback<Characters> {
             override fun onResponse(call: Call<Characters>, response: Response<Characters>) {

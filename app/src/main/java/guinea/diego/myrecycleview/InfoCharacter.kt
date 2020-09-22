@@ -22,8 +22,8 @@ class InfoCharacter : AppCompatActivity() {
         status_character.text = persons.status
         side_character.text = persons.type
         sex_character.text = persons.gender
-        //btn_location.text = persons.name
-        //btn_origin.text = persons.origin.name
+        //btn_location.text = persons.location.name
+       // btn_origin.text = persons.origin.name
         Glide.with(img_character.context)
             .load(persons.image)
             .into(img_character)
