@@ -1,9 +1,5 @@
 package guinea.diego.myrecycleview.modelo
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
-import kotlinx.android.parcel.RawValue
-import retrofit2.Callback
 import java.io.Serializable
 
 
