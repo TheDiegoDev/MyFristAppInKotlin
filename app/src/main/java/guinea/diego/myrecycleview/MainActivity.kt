@@ -6,6 +6,7 @@ import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.material.snackbar.BaseTransientBottomBar
 import guinea.diego.myrecycleview.modelo.Characters
 import guinea.diego.myrecycleview.modelo.PrincipalRepo
 import kotlinx.android.synthetic.main.activity_main.*
@@ -25,11 +26,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     //Esta funcion se encarga de conectar con la Api y decantrse entre dos funciones segun la respuesta
-    private fun setUpRecyclerView(){
+    private fun setUpRecyclerView() {
         recyclerView.layoutManager = LinearLayoutManager(this)
-
-        val call = RetrofitInitializer(PrincipalRepo).characterService().list()
-        call.enqueue(object : Callback<Characters> {
+        val list = MainViewModel()
+        list.getCharactersVM(object : Callback<Characters> {
             override fun onResponse(call: Call<Characters>, response: Response<Characters>) {
                 onResp(response) //Llamamos a la funcion en caso de respuesta
             }
@@ -37,6 +37,17 @@ class MainActivity : AppCompatActivity() {
                 onFaild(t) // Llamamos a la funcion en caso de error
             }
         })
+//        val call = RetrofitInitializer(PrincipalRepo).characterService().list()
+//        call.enqueue(object : Callback<Characters> {
+//            override fun onResponse(call: Call<Characters>, response: Response<Characters>) {
+//                onResp(response) //Llamamos a la funcion en caso de respuesta
+//            }
+//            override fun onFailure(call: Call<Characters>, t: Throwable) {
+//                onFaild(t) // Llamamos a la funcion en caso de error
+//            }
+//        })
+//
+//
     }
 
     //Llamamos a la funcion que configura el recyclerView
