@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-
+    //TODO añadir filtrado
     //Llamamos a la funcion que configura el recyclerView
     private fun onResp(response: Characters) {
         response?.let {
@@ -65,4 +65,5 @@ class MainActivity : AppCompatActivity() {
     private fun updateData(characters: Characters) {
         (recyclerView.adapter as RecyclerAdapter).setData(characters)
     }
+
 }

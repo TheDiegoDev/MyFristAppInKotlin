@@ -61,6 +61,7 @@ class RecyclerAdapter(
         }
 
         init {
+            //TODO esto debería llamarse desde el activity, mediante un handler o algo similar.
             //Evento de click en un item del recyclerView
             itemView.setOnClickListener {
                 val pos = characters[adapterPosition]
