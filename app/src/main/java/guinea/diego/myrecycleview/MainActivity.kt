@@ -1,64 +1,58 @@
 package guinea.diego.myrecycleview
-import RetrofitInitializer
-import androidx.appcompat.app.AppCompatActivity
+
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.google.android.material.snackbar.BaseTransientBottomBar
 import guinea.diego.myrecycleview.modelo.Characters
-import guinea.diego.myrecycleview.modelo.PrincipalRepo
 import kotlinx.android.synthetic.main.activity_main.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
+    private val viewModel = MainViewModel()
+
+    private var listAdapter: RecyclerAdapter? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        initAdapter()
         //Llamamos a la funcion setUpRecyclerView
-        setUpRecyclerView()
 
 
     }
 
-    //Esta funcion se encarga de conectar con la Api y decantrse entre dos funciones segun la respuesta
-    private fun setUpRecyclerView() {
+    private fun initAdapter() {
+        listAdapter = RecyclerAdapter(this)
+        recyclerView.adapter = listAdapter
+        val layoutRecycler = StaggeredGridLayoutManager(
+            1, StaggeredGridLayoutManager.VERTICAL
+        )
+        recyclerView.layoutManager = layoutRecycler
+        recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         recyclerView.layoutManager = LinearLayoutManager(this)
-        val list = MainViewModel()
-        list.getCharactersVM(object : Callback<Characters> {
-            override fun onResponse(call: Call<Characters>, response: Response<Characters>) {
-                onResp(response) //Llamamos a la funcion en caso de respuesta
+
+        viewModel.getCharactersVM(object : BaseCallback<Characters> {
+            override fun onResult(result: Characters) {
+                onResp(result)
             }
-            override fun onFailure(call: Call<Characters>, t: Throwable) {
-                onFaild(t) // Llamamos a la funcion en caso de error
+
+            override fun onError(error: Error) {
+                onFaild(error)
             }
         })
-//        val call = RetrofitInitializer(PrincipalRepo).characterService().list()
-//        call.enqueue(object : Callback<Characters> {
-//            override fun onResponse(call: Call<Characters>, response: Response<Characters>) {
-//                onResp(response) //Llamamos a la funcion en caso de respuesta
-//            }
-//            override fun onFailure(call: Call<Characters>, t: Throwable) {
-//                onFaild(t) // Llamamos a la funcion en caso de error
-//            }
-//        })
-//
-//
     }
+
 
     //Llamamos a la funcion que configura el recyclerView
-    private fun onResp(response: Response<Characters>) {
-        val list = response.body()
-        list?.let {
+    private fun onResp(response: Characters) {
+        response?.let {
             progressBar.visibility = View.INVISIBLE
             errorTxt.visibility = View.INVISIBLE
-            confList(list)
+            updateData(response)
 
-    }
+        }
     }
 
     //Se muestra un mensaje de error
@@ -68,13 +62,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     //Configuracion del recyclerView con los datos recojidos por la Api
-    private fun confList(characters: Characters){
-        val recycler = recyclerView
-        recycler.adapter = RecyclerAdapter(characters , this)
-        val layoutRecycler = StaggeredGridLayoutManager(
-            1, StaggeredGridLayoutManager.VERTICAL)
-        recycler.layoutManager = layoutRecycler
-        recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-
+    private fun updateData(characters: Characters) {
+        (recyclerView.adapter as RecyclerAdapter).setData(characters)
     }
 }
