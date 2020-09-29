@@ -1,13 +1,18 @@
-package guinea.diego.myrecycleview
+package guinea.diego.myrecycleview.servicios
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+<<<<<<< Updated upstream:app/src/main/java/guinea/diego/myrecycleview/RecyclerAdapter.kt
 import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
+=======
+>>>>>>> Stashed changes:app/src/main/java/guinea/diego/myrecycleview/servicios/RecyclerAdapter.kt
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import guinea.diego.myrecycleview.InfoCharacter
+import guinea.diego.myrecycleview.R
 import guinea.diego.myrecycleview.modelo.CharacterRM
 import guinea.diego.myrecycleview.modelo.Characters
 import kotlinx.android.synthetic.main.characters.view.*
@@ -49,8 +54,15 @@ class RecyclerAdapter(private val characters: Characters,
 
         init {
             itemView.setOnClickListener {
+<<<<<<< Updated upstream:app/src/main/java/guinea/diego/myrecycleview/RecyclerAdapter.kt
                val intent: Intent = Intent(itemView.context, InfoCharacter::class.java)
                context.startActivity(intent)
+=======
+                val pos = characters[adapterPosition]
+                val intent: Intent = Intent(itemView.context, InfoCharacter::class.java)
+                intent.putExtra("persons", pos.id)
+                context.startActivity(intent)
+>>>>>>> Stashed changes:app/src/main/java/guinea/diego/myrecycleview/servicios/RecyclerAdapter.kt
             }
         }
     }
