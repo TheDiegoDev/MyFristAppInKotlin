@@ -1,9 +1,6 @@
 package guinea.diego.myrecycleview.modelo
 
-<<<<<<< Updated upstream
-class CharacterRM(val name: String, val species: String, val image: String)
-class Characters(val results: List<CharacterRM>)
-=======
+
 import kotlinx.android.parcel.RawValue
 import java.io.Serializable
 
@@ -21,7 +18,3 @@ data class CharacterRM(
 
 class Characters(val results: List<CharacterRM>)
 
-
-
-
->>>>>>> Stashed changes

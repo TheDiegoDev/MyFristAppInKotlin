@@ -1,7 +1,4 @@
-<<<<<<< Updated upstream:app/src/main/java/guinea/diego/myrecycleview/RetrofitInitializer.kt
-=======
 import com.ihsanbal.logging.LoggingInterceptor
-import guinea.diego.myrecycleview.servicios.CharacterService
 import okhttp3.OkHttpClient
 import okhttp3.internal.platform.Platform
 import retrofit2.Retrofit
@@ -16,16 +13,17 @@ class RetrofitInitializer(repo: String) {
             .response("Response")
             .build()
     }
->>>>>>> Stashed changes:app/src/main/java/guinea/diego/myrecycleview/servicios/RetrofitInitializer.kt
+
+    private fun getOkClient(): OkHttpClient {
+        return OkHttpClient.Builder().addInterceptor(getLoggingInterceptor()).build()
+    }
 
 
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+    private val retrofit = Retrofit.Builder()
+        .baseUrl(repo)
+        .client(getOkClient())
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
 
-class RetrofitInitializer {
-        private val retrofit = Retrofit.Builder()
-                .baseUrl("https://rickandmortyapi.com/api/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
     fun characterService() = retrofit.create(CharacterService::class.java)!!
 }

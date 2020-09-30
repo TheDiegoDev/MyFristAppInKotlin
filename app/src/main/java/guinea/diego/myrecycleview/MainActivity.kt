@@ -1,87 +1,71 @@
 package guinea.diego.myrecycleview
-import RetrofitInitializer
-import androidx.appcompat.app.AppCompatActivity
+
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import guinea.diego.myrecycleview.modelo.Characters
 import guinea.diego.myrecycleview.servicios.BaseCallback
-import guinea.diego.myrecycleview.servicios.RecyclerAdapter
 import guinea.diego.myrecycleview.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
+    private val viewModel = MainViewModel()
+
+    private var listAdapter: RecyclerAdapter? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setUpRecyclerView()
+        initAdapter()
+        //Llamamos a la funcion setUpRecyclerView
+
 
     }
 
-    private fun setUpRecyclerView(){
+    private fun initAdapter() {
+        listAdapter = RecyclerAdapter(this)
+        recyclerView.adapter = listAdapter
+        val layoutRecycler = StaggeredGridLayoutManager(
+            1, StaggeredGridLayoutManager.VERTICAL
+        )
+        recyclerView.layoutManager = layoutRecycler
+        recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-<<<<<<< Updated upstream
-        val call = RetrofitInitializer().characterService().list()
-        call.enqueue(object : Callback<Characters> {
-            override fun onResponse(call: Call<Characters>, response: Response<Characters>) {
-                onResp(response)
-            }
-            override fun onFailure(call: Call<Characters>, t: Throwable) {
-                onFaild(t)
-=======
-        viewModel.getCharactersVM(object :
-            BaseCallback<Characters> {
+        viewModel.getCharactersVM(object : BaseCallback<Characters> {
             override fun onResult(result: Characters) {
                 onResp(result)
             }
 
             override fun onError(error: Error) {
-                onFailed(error)
->>>>>>> Stashed changes
+                onFaild(error)
             }
         })
     }
 
-<<<<<<< Updated upstream
-
-    private fun onResp(response: Response<Characters>) {
-        val list = response.body()
-        list?.let {
-=======
     //TODO añadir filtrado
     //Llamamos a la funcion que configura el recyclerView
     private fun onResp(response: Characters) {
-        response.let {
->>>>>>> Stashed changes
+        response?.let {
             progressBar.visibility = View.INVISIBLE
-            confList(list)
+            errorTxt.visibility = View.INVISIBLE
+            updateData(response)
 
         }
     }
 
-<<<<<<< Updated upstream
-    private fun onFaild(t: Throwable) {
-=======
     //Se muestra un mensaje de error
-    private fun onFailed(t: Throwable) {
->>>>>>> Stashed changes
+    private fun onFaild(t: Throwable) {
         progressBar.visibility = View.INVISIBLE
         errorTxt.text = t.message
     }
 
-    private fun confList(characters: Characters){
-        val recycler = recyclerView
-        recycler.adapter = RecyclerAdapter(characters , this)
-        val layoutRecycler = StaggeredGridLayoutManager(
-            1, StaggeredGridLayoutManager.VERTICAL)
-        recycler.layoutManager = layoutRecycler
-        recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-
+    //Configuracion del recyclerView con los datos recojidos por la Api
+    private fun updateData(characters: Characters) {
+        (recyclerView.adapter as RecyclerAdapter).setData(characters)
     }
+
 }
