@@ -2,9 +2,8 @@ package guinea.diego.myrecycleview.remote
 
 
 import RetrofitInitializer
+import guinea.diego.myrecycleview.modelo.*
 import guinea.diego.myrecycleview.servicios.BaseCallback
-import guinea.diego.myrecycleview.modelo.Characters
-import guinea.diego.myrecycleview.modelo.PrincipalRepo
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -12,6 +11,7 @@ import retrofit2.Response
 class CharacterRepository {
 
     private val characterService = RetrofitInitializer(PrincipalRepo).characterService()
+    private val urlOriginService = RetrofitInitializer(UrlRepo).OriginService()
 
     fun getCharacters(callback: BaseCallback<Characters>) {
 
@@ -30,6 +30,25 @@ class CharacterRepository {
         })
 
     }
+
+
+    fun getUrlOrigin(callback: BaseCallback<UrlOrigin>){
+        urlOriginService.locatcion().enqueue(object : Callback<UrlOrigin>{
+            override fun onFailure(call: Call<UrlOrigin>, t: Throwable) {
+                callback.onError(Error(t))
+            }
+
+            override fun onResponse(call: Call<UrlOrigin>, response: Response<UrlOrigin>) {
+                if (response.body() == null) {
+                    callback.onError(Error("esta vacio"))
+                } else {
+                    callback.onResult(response.body()!!)
+                }
+            }
+        })
+    }
+
+
 
 }
 

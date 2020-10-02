@@ -1,5 +1,6 @@
 package guinea.diego.myrecycleview
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -8,8 +9,6 @@ import guinea.diego.myrecycleview.modelo.Characters
 import guinea.diego.myrecycleview.servicios.BaseCallback
 import guinea.diego.myrecycleview.viewmodel.InfoViewModel
 import kotlinx.android.synthetic.main.info_character.*
-import kotlinx.android.synthetic.main.info_character.view.*
-
 
 class InfoCharacter : AppCompatActivity() {
 
@@ -33,7 +32,6 @@ class InfoCharacter : AppCompatActivity() {
             }
         })
     }
-
     private fun showError(error: Error) {
         error_txt.text = "$error"
     }
@@ -54,5 +52,11 @@ class InfoCharacter : AppCompatActivity() {
                 .load(infoCharacter!!.image)
                 .into(img_character)
         }
+        btn_origin.setOnClickListener {
+            val intent: Intent = Intent(this, OriginDetail::class.java)
+            intent.putExtra("url", infoCharacter!!.origin.url)
+            startActivity(intent)
+        }
     }
+
 }

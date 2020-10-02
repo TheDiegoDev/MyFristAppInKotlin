@@ -18,3 +18,11 @@ data class CharacterRM(
 
 class Characters(val results: List<CharacterRM>)
 
+
+data class UrlOrigin(
+    val id: Int,
+    val name: String,
+    val type: String,
+    val dimension: String): Serializable
+
+//class DetailOrigin(val results: List<UrlOrigin>)

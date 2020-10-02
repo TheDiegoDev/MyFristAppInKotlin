@@ -26,4 +26,5 @@ class RetrofitInitializer(repo: String) {
         .build()
 
     fun characterService() = retrofit.create(CharacterService::class.java)!!
+    fun OriginService() = retrofit.create(urlOriginService::class.java)!!
 }
