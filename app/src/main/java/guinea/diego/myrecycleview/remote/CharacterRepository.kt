@@ -26,6 +26,7 @@ class CharacterRepository {
 
             override fun onFailure(call: Call<Characters>, t: Throwable) {
                 callback.onError(Error(t))
+                
             }
         })
 
