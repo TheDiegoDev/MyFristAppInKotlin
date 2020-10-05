@@ -15,15 +15,17 @@ class OriginDetail: AppCompatActivity() {
     private val viewModel = OriginViewModel()
     private var infoOrigin: UrlOrigin? = null
 
+
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setContentView(R.layout.origin_detall)
-            UrlRepo = intent.getStringExtra("url").toString()
+
             configPage()
         }
 
     private fun configPage() {
-        name_planet.text = UrlRepo
+        val urlRepo = intent.getStringExtra("url")
+        val numLocation = viewModel.getNumericValues(urlRepo.toString())
          viewModel.getOriginUrl(object : BaseCallback<UrlOrigin> {
             override fun onResult(result: UrlOrigin) {
                 importData(result)
@@ -32,7 +34,7 @@ class OriginDetail: AppCompatActivity() {
             override fun onError(error: Error) {
                 onFaild(error)
             }
-        })
+        }, numLocation)
     }
 
     private fun onFaild(error: Error) {

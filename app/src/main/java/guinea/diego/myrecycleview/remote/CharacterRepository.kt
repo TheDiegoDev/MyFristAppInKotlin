@@ -7,11 +7,12 @@ import guinea.diego.myrecycleview.servicios.BaseCallback
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.http.Path
 
 class CharacterRepository {
 
     private val characterService = RetrofitInitializer(PrincipalRepo).characterService()
-    private val urlOriginService = RetrofitInitializer(UrlRepo).OriginService()
+    private val urlOriginService = RetrofitInitializer(PrincipalRepo).OriginService()
 
     fun getCharacters(callback: BaseCallback<Characters>) {
 
@@ -33,8 +34,8 @@ class CharacterRepository {
     }
 
 
-    fun getUrlOrigin(callback: BaseCallback<UrlOrigin>){
-        urlOriginService.locatcion().enqueue(object : Callback<UrlOrigin>{
+    fun getUrlOrigin(callback: BaseCallback<UrlOrigin>, numLocation: String){
+        urlOriginService.location(numLocation).enqueue(object : Callback<UrlOrigin>{
             override fun onFailure(call: Call<UrlOrigin>, t: Throwable) {
                 callback.onError(Error(t))
             }
