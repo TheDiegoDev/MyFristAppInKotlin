@@ -25,4 +25,4 @@ data class UrlOrigin(
     val type: String,
     val dimension: String): Serializable
 
-//class DetailOrigin(val results: List<UrlOrigin>)
+

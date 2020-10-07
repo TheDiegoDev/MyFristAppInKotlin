@@ -13,7 +13,6 @@ import kotlinx.android.synthetic.main.characters.view.*
 
 
 class RecyclerAdapter(
-
     private val context: Context
 ) : RecyclerView.Adapter<RecyclerAdapter.BaseViewHolder>() {
 

@@ -1,18 +1,22 @@
 package guinea.diego.myrecycleview.viewmodel
 
 
+import Single
 import guinea.diego.myrecycleview.modelo.CharacterRM
 import guinea.diego.myrecycleview.modelo.Characters
+import guinea.diego.myrecycleview.remote.CharacterRepository
 import guinea.diego.myrecycleview.servicios.BaseCallback
 
 
 class InfoViewModel {
 
     private var dataOnScreen: ArrayList<CharacterRM> = arrayListOf()
-    private val viewModel = MainViewModel()
+    //private val characterRepository: CharacterRepository = CharacterRepository()
+    val respositorio = Single.Repository()
+
 
     fun getAllCharacters(viewCallback: BaseCallback<Characters>){
-        viewModel.getCharactersVM(object : BaseCallback<Characters> {
+        respositorio.getCharacters(object : BaseCallback<Characters> {
             override fun onResult(result: Characters) {
                 dataOnScreen.clear()
                 dataOnScreen.addAll(result.results)
@@ -26,7 +30,6 @@ class InfoViewModel {
     }
 
     fun filterContent(persons: Int): CharacterRM? {
-
         var response: CharacterRM? = null
         var cont: Int = 0
         for (n in dataOnScreen){

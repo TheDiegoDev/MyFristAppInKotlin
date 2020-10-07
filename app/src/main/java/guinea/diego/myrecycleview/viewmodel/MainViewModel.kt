@@ -8,11 +8,11 @@ import guinea.diego.myrecycleview.remote.CharacterRepository
 
 class MainViewModel() {
 
-    private val characterRepository: CharacterRepository = CharacterRepository()
-
+    //private val characterRepository: CharacterRepository = CharacterRepository()
+    val respositorio = Single.characterRepository
     fun getCharactersVM(viewCallback: BaseCallback<Characters>) {
 
-        characterRepository.getCharacters(object :
+        respositorio.getCharacters(object :
             BaseCallback<Characters> {
             override fun onResult(result: Characters) {
                 viewCallback.onResult(result)

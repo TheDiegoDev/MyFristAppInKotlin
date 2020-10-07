@@ -13,16 +13,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     private val viewModel = MainViewModel()
-
     private var listAdapter: RecyclerAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initAdapter()
-        //Llamamos a la funcion setUpRecyclerView
-
-
     }
 
     private fun initAdapter() {
@@ -46,8 +42,6 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    //TODO añadir filtrado
-    //Llamamos a la funcion que configura el recyclerView
     private fun onResp(response: Characters) {
         response?.let {
             progressBar.visibility = View.INVISIBLE
@@ -57,13 +51,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    //Se muestra un mensaje de error
     private fun onFaild(t: Throwable) {
         progressBar.visibility = View.INVISIBLE
         errorTxt.text = t.message
     }
 
-    //Configuracion del recyclerView con los datos recojidos por la Api
     private fun updateData(characters: Characters) {
         (recyclerView.adapter as RecyclerAdapter).setData(characters)
     }
