@@ -6,11 +6,10 @@ import guinea.diego.myrecycleview.servicios.BaseCallback
 import java.lang.Double.parseDouble
 
 class OriginViewModel {
-
-    private val characterRepository: CharacterRepository = CharacterRepository()
+    private val respositorio = Single.characterRepository
 
     fun getOriginUrl(viewCallback: BaseCallback<UrlOrigin>, numLocation: String) {
-        characterRepository.getUrlOrigin(object : BaseCallback<UrlOrigin> {
+        respositorio.getUrlOrigin(object : BaseCallback<UrlOrigin> {
             override fun onResult(result: UrlOrigin) {
                 viewCallback.onResult(result)
             }
@@ -33,7 +32,6 @@ class OriginViewModel {
                 sb.append(cadena[i].toString())
             }
         }
-
         return sb.toString();
     }
 }

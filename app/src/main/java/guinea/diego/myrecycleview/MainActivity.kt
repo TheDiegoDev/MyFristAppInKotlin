@@ -1,45 +1,56 @@
 package guinea.diego.myrecycleview
-import RetrofitInitializer
-import androidx.appcompat.app.AppCompatActivity
+
 import android.os.Bundle
+import android.view.ActionProvider
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import guinea.diego.myrecycleview.modelo.Characters
+import guinea.diego.myrecycleview.servicios.BaseCallback
+import guinea.diego.myrecycleview.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
+    private val viewModel = MainViewModel()
+    private var listAdapter: RecyclerAdapter? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setUpRecyclerView()
-
+        initAdapter()
     }
 
-    private fun setUpRecyclerView(){
+    private fun initAdapter() {
+        listAdapter = RecyclerAdapter(this)
+        recyclerView.adapter = listAdapter
+        val layoutRecycler = StaggeredGridLayoutManager(
+            1, StaggeredGridLayoutManager.VERTICAL
+        )
+        recyclerView.layoutManager = layoutRecycler
+        recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val call = RetrofitInitializer().characterService().list()
-        call.enqueue(object : Callback<Characters> {
-            override fun onResponse(call: Call<Characters>, response: Response<Characters>) {
-                onResp(response)
+        viewModel.getCharactersVM(object : BaseCallback<Characters> {
+            override fun onResult(result: Characters) {
+                onResp(result)
             }
-            override fun onFailure(call: Call<Characters>, t: Throwable) {
-                onFaild(t)
+
+            override fun onError(error: Error) {
+                onFaild(error)
             }
         })
     }
 
-
-    private fun onResp(response: Response<Characters>) {
-        val list = response.body()
-        list?.let {
+    private fun onResp(response: Characters) {
+        response?.let {
             progressBar.visibility = View.INVISIBLE
-            confList(list)
+            errorTxt.visibility = View.INVISIBLE
+            updateData(response)
 
         }
     }
@@ -49,13 +60,25 @@ class MainActivity : AppCompatActivity() {
         errorTxt.text = t.message
     }
 
-    private fun confList(characters: Characters){
-        val recycler = recyclerView
-        recycler.adapter = RecyclerAdapter(characters , this)
-        val layoutRecycler = StaggeredGridLayoutManager(
-            1, StaggeredGridLayoutManager.VERTICAL)
-        recycler.layoutManager = layoutRecycler
-        recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        val item: MenuItem = menu!!.findItem(R.id.action_search)
+            val search = item.actionView as SearchView
+        search.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
 
+            override fun onQueryTextChange(newText: String?): Boolean {
+                listAdapter?.filter?.filter(newText)
+                return false
+            }
+        })
+        return super.onCreateOptionsMenu(menu)
     }
+
+    private fun updateData(characters: Characters) {
+        (recyclerView.adapter as RecyclerAdapter).setData(characters)
+    }
+
 }

@@ -4,17 +4,14 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import guinea.diego.myrecycleview.modelo.*
 import guinea.diego.myrecycleview.servicios.BaseCallback
-import guinea.diego.myrecycleview.viewmodel.MainViewModel
 import guinea.diego.myrecycleview.viewmodel.OriginViewModel
 import kotlinx.android.synthetic.main.origin_detall.*
-import java.net.URL
+
 
 
 class OriginDetail: AppCompatActivity() {
 
     private val viewModel = OriginViewModel()
-    private var infoOrigin: UrlOrigin? = null
-
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
