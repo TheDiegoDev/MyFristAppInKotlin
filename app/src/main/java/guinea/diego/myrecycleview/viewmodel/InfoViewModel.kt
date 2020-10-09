@@ -4,16 +4,12 @@ package guinea.diego.myrecycleview.viewmodel
 import Single
 import guinea.diego.myrecycleview.modelo.CharacterRM
 import guinea.diego.myrecycleview.modelo.Characters
-import guinea.diego.myrecycleview.remote.CharacterRepository
 import guinea.diego.myrecycleview.servicios.BaseCallback
 
 
 class InfoViewModel {
-
     private var dataOnScreen: ArrayList<CharacterRM> = arrayListOf()
-    //private val characterRepository: CharacterRepository = CharacterRepository()
-    val respositorio = Single.Repository()
-
+    private val respositorio = Single.Repository()
 
     fun getAllCharacters(viewCallback: BaseCallback<Characters>){
         respositorio.getCharacters(object : BaseCallback<Characters> {
@@ -28,15 +24,12 @@ class InfoViewModel {
         })
 
     }
-
     fun filterContent(persons: Int): CharacterRM? {
         var response: CharacterRM? = null
-        var cont: Int = 0
-        for (n in dataOnScreen){
+        for ((cont) in dataOnScreen.withIndex()){
             if (dataOnScreen[cont].id == persons){
                 response = dataOnScreen[cont]
             }
-            cont++
         }
         return response
     }

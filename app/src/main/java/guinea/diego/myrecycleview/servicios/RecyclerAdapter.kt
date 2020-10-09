@@ -5,6 +5,8 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import guinea.diego.myrecycleview.modelo.CharacterRM
@@ -12,13 +14,38 @@ import guinea.diego.myrecycleview.modelo.Characters
 import kotlinx.android.synthetic.main.characters.view.*
 
 
-class RecyclerAdapter(
-    private val context: Context
-) : RecyclerView.Adapter<RecyclerAdapter.BaseViewHolder>() {
+class RecyclerAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerAdapter.BaseViewHolder>(), Filterable {
 
     private var characters: ArrayList<CharacterRM> = arrayListOf()
 
-    public fun setData(character: Characters) {
+     override fun getFilter(): Filter {
+        return object : Filter(){
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                 val allCharacters: ArrayList<CharacterRM> = arrayListOf()
+                if(constraint.toString().isEmpty()){
+                    allCharacters.addAll(characters)
+                }else{
+                    for (oneCharacter: CharacterRM in characters){
+                        if (oneCharacter.name.toLowerCase().contains(constraint.toString().toLowerCase())){
+                            allCharacters.add(oneCharacter)
+                        }
+                    }
+                }
+                val filterResult = FilterResults()
+                filterResult.values = allCharacters
+                return  filterResult
+            }
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                characters.clear()
+                if (results != null) {
+                    characters.addAll(results.values as Collection<CharacterRM>)
+                }
+                notifyDataSetChanged()
+            }
+        }
+    }
+
+    fun setData(character: Characters) {
         characters.clear()
         characters.addAll(character.results)
         notifyDataSetChanged()
@@ -34,6 +61,7 @@ class RecyclerAdapter(
     override fun getItemCount(): Int {
         return characters.size
     }
+
 
     //Funcion encargada de montar cada elemento del recycler
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
@@ -71,3 +99,4 @@ class RecyclerAdapter(
         }
     }
 }
+

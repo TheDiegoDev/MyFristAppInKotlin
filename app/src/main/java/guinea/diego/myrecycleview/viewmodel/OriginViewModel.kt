@@ -6,9 +6,8 @@ import guinea.diego.myrecycleview.servicios.BaseCallback
 import java.lang.Double.parseDouble
 
 class OriginViewModel {
+    private val respositorio = Single.characterRepository
 
-   // private val characterRepository: CharacterRepository = CharacterRepository()
-        val respositorio = Single.characterRepository
     fun getOriginUrl(viewCallback: BaseCallback<UrlOrigin>, numLocation: String) {
         respositorio.getUrlOrigin(object : BaseCallback<UrlOrigin> {
             override fun onResult(result: UrlOrigin) {

@@ -1,8 +1,12 @@
 package guinea.diego.myrecycleview
 
 import android.os.Bundle
+import android.view.ActionProvider
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -54,6 +58,23 @@ class MainActivity : AppCompatActivity() {
     private fun onFaild(t: Throwable) {
         progressBar.visibility = View.INVISIBLE
         errorTxt.text = t.message
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        val item: MenuItem = menu!!.findItem(R.id.action_search)
+            val search = item.actionView as SearchView
+        search.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                listAdapter?.filter?.filter(newText)
+                return false
+            }
+        })
+        return super.onCreateOptionsMenu(menu)
     }
 
     private fun updateData(characters: Characters) {
