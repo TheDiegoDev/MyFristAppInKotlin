@@ -1,5 +1,7 @@
 package guinea.diego.myrecycleview
 
+import android.app.SearchManager
+import android.content.Context
 import android.os.Bundle
 import android.view.ActionProvider
 import android.view.Menu
@@ -18,6 +20,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
     private val viewModel = MainViewModel()
     private var listAdapter: RecyclerAdapter? = null
+    var searchView: SearchView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,8 +32,7 @@ class MainActivity : AppCompatActivity() {
         listAdapter = RecyclerAdapter(this)
         recyclerView.adapter = listAdapter
         val layoutRecycler = StaggeredGridLayoutManager(
-            1, StaggeredGridLayoutManager.VERTICAL
-        )
+            1, StaggeredGridLayoutManager.VERTICAL)
         recyclerView.layoutManager = layoutRecycler
         recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -62,19 +64,24 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
-        val item: MenuItem = menu!!.findItem(R.id.action_search)
-            val search = item.actionView as SearchView
-        search.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        searchView = menu?.findItem(R.id.action_search)?.actionView as SearchView
+        searchView?.apply {
+            setSearchableInfo(searchManager.getSearchableInfo(componentName))
+            maxWidth = Int.MAX_VALUE
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    listAdapter!!.filter.filter(query)
+                    return true
+                }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                listAdapter?.filter?.filter(newText)
-                return false
-            }
-        })
-        return super.onCreateOptionsMenu(menu)
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    listAdapter!!.filter.filter(newText)
+                    return true
+                }
+            })
+        }
+        return true
     }
 
     private fun updateData(characters: Characters) {
