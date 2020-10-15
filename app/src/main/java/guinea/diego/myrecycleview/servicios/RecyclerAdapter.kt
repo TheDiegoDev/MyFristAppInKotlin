@@ -16,34 +16,34 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class RecyclerAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerAdapter.BaseViewHolder>(), Filterable {
+class RecyclerAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerAdapter.BaseViewHolder>() /*Filterable */{
 
     private var characters: ArrayList<CharacterRM> = arrayListOf()
-    private var filterCharacter: ArrayList<CharacterRM> = arrayListOf()
-
-    init {
-        filterCharacter = characters
-    }
-    override fun getFilter(): Filter {
-        return object : Filter(){
-            override fun performFiltering(constraint: CharSequence?): FilterResults {
-                val busqueda = constraint.toString()
-                if(constraint.toString().isEmpty()){
-                    filterCharacter = characters
-                }else{
-                    val resultCharacter: ArrayList<CharacterRM> = arrayListOf()
-                    characters.filter { it.name.toLowerCase().contains(busqueda.toLowerCase()) }
-                        .forEach { resultCharacter.add(it) }
-                    filterCharacter = resultCharacter
-                }
-                return FilterResults().apply { values = filterCharacter }
-            }
-            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                filterCharacter = results!!.values as ArrayList<CharacterRM>
-                notifyDataSetChanged()
-            }
-        }
-    }
+//    private var filterCharacter: ArrayList<CharacterRM> = arrayListOf()
+//
+//    init {
+//        filterCharacter = characters
+//    }
+//    override fun getFilter(): Filter {
+//        return object : Filter(){
+//            override fun performFiltering(constraint: CharSequence?): FilterResults {
+//                val busqueda = constraint.toString()
+//                if(constraint.toString().isEmpty()){
+//                    filterCharacter = characters
+//                }else{
+//                    val resultCharacter: ArrayList<CharacterRM> = arrayListOf()
+//                    characters.filter { it.name.toLowerCase().contains(busqueda.toLowerCase()) }
+//                        .forEach { resultCharacter.add(it) }
+//                    filterCharacter = resultCharacter
+//                }
+//                return FilterResults().apply { values = filterCharacter }
+//            }
+//            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+//                filterCharacter = results!!.values as ArrayList<CharacterRM>
+//                notifyDataSetChanged()
+//            }
+//        }
+//    }
 
     fun setData(character: Characters) {
         characters.clear()
