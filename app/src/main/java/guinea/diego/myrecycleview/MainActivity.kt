@@ -27,9 +27,7 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel = MainViewModel()
     private var listAdapter: RecyclerAdapter? = null
-    var searchView: SearchView? = null
     private var loadingDialog: Dialog? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,54 +83,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
-//        val menuItem = menu!!.findItem(R.id.action_search)
-//////        if (menuItem != null)
-//////        {
-//////            val searchView = menuItem.actionView as SearchView
-//////            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
-//////                override fun onQueryTextSubmit(query: String?): Boolean {
-//////                    return true
-//////                }
-//////                override fun onQueryTextChange(newText: String?): Boolean {
-//////                    if(newText!!.isNotEmpty()){
-//////                        displayCharacter.clear()
-//////                        val search = newText.toLowerCase(Locale.getDefault())
-//////                        listCharacter.forEach {
-//////                            if(it.name.toLowerCase(Locale.getDefault()).contains(search)){
-//////                                displayCharacter.add(it)
-//////                            }
-//////                        }
-//////                        listAdapter!!.notifyDataSetChanged()
-//////                    }else{
-//////                        displayCharacter.clear()
-//////                        displayCharacter.addAll(listCharacter)
-//////                        listAdapter!!.notifyDataSetChanged()
-//////                    }
-//////
-//////                    return true
-//////                }
-//////            })
-//////        }
-        searchView?.apply {
-            val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-            searchView = menu?.findItem(R.id.action_search)?.actionView as SearchView
-            searchView?.apply {
-                setSearchableInfo(searchManager.getSearchableInfo(componentName))
-                maxWidth = Int.MAX_VALUE
-                setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                    override fun onQueryTextSubmit(query: String?): Boolean {
-                        listAdapter!!.filter.filter(query)
-                        return true
-                    }
-                    override fun onQueryTextChange(newText: String?): Boolean {
-                        listAdapter!!.filter.filter(newText)
-                        return true
-                    }
-                })
-            }
 
-        }
+        menuInflater.inflate(R.menu.main_menu, menu)
+        val menuItem = menu!!.findItem(R.id.action_search)
+        val searchView = menuItem.actionView as SearchView
+        searchView.maxWidth = Int.MAX_VALUE
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    listAdapter!!.filter.filter(query)
+                    return true
+                }
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    listAdapter!!.filter.filter(newText)
+                    return true
+                }
+        })
         return true
     }
 
