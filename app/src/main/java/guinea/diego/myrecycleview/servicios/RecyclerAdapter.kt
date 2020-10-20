@@ -1,4 +1,4 @@
-package guinea.diego.myrecycleview
+package guinea.diego.myrecycleview.servicios
 
 import android.content.Context
 import android.content.Intent
@@ -9,37 +9,38 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import guinea.diego.myrecycleview.InfoCharacter
+import guinea.diego.myrecycleview.R
 import guinea.diego.myrecycleview.modelo.CharacterRM
 import guinea.diego.myrecycleview.modelo.Characters
 import kotlinx.android.synthetic.main.characters.view.*
+import kotlin.collections.ArrayList
 
 
-class RecyclerAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerAdapter.BaseViewHolder>(), Filterable {
+class RecyclerAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerAdapter.BaseViewHolder>(), Filterable{
 
     private var characters: ArrayList<CharacterRM> = arrayListOf()
+    private var filterCharacter: ArrayList<CharacterRM> = arrayListOf()
 
-     override fun getFilter(): Filter {
+    init {
+        filterCharacter = characters
+    }
+    override fun getFilter(): Filter {
         return object : Filter(){
             override fun performFiltering(constraint: CharSequence?): FilterResults {
-                 val allCharacters: ArrayList<CharacterRM> = arrayListOf()
+                val busqueda = constraint.toString()
                 if(constraint.toString().isEmpty()){
-                    allCharacters.addAll(characters)
+                    filterCharacter = characters
                 }else{
-                    for (oneCharacter: CharacterRM in characters){
-                        if (oneCharacter.name.toLowerCase().contains(constraint.toString().toLowerCase())){
-                            allCharacters.add(oneCharacter)
-                        }
-                    }
+                    val resultCharacter: ArrayList<CharacterRM> = arrayListOf()
+                    characters.filter { it.name.toLowerCase().contains(busqueda.toLowerCase()) }
+                        .forEach { resultCharacter.add(it) }
+                    filterCharacter = resultCharacter
                 }
-                val filterResult = FilterResults()
-                filterResult.values = allCharacters
-                return  filterResult
+                return FilterResults().apply { values = filterCharacter }
             }
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                characters.clear()
-                if (results != null) {
-                    characters.addAll(results.values as Collection<CharacterRM>)
-                }
+                filterCharacter = results!!.values as ArrayList<CharacterRM>
                 notifyDataSetChanged()
             }
         }
