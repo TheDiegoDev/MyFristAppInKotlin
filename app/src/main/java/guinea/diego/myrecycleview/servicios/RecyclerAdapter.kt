@@ -22,25 +22,28 @@ class RecyclerAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
     private var characters: ArrayList<CharacterRM> = arrayListOf()
     private var filterCharacter: ArrayList<CharacterRM> = arrayListOf()
 
-    init {
-        filterCharacter = characters
-    }
     override fun getFilter(): Filter {
         return object : Filter(){
             override fun performFiltering(constraint: CharSequence?): FilterResults {
-                val busqueda = constraint.toString()
-                if(constraint.toString().isEmpty()){
-                    filterCharacter = characters
+                val filterResults = FilterResults()
+                if(constraint == null || constraint.length < 0){
+                    filterResults.count = filterCharacter.size
+                    filterResults.values = filterCharacter
                 }else{
-                    val resultCharacter: ArrayList<CharacterRM> = arrayListOf()
-                    characters.filter { it.name.toLowerCase().contains(busqueda.toLowerCase()) }
-                        .forEach { resultCharacter.add(it) }
-                    filterCharacter = resultCharacter
+                    var searchString = constraint.toString().toLowerCase()
+                    val itemModal = ArrayList<CharacterRM>()
+                    for(item in filterCharacter){
+                        if(item.name.toLowerCase().contains(searchString) || item.species.toLowerCase().contains(searchString)){
+                            itemModal.add(item)
+                        }
+                    }
+                    filterResults.count = itemModal.size
+                    filterResults.values = itemModal
                 }
-                return FilterResults().apply { values = filterCharacter }
+                return filterResults
             }
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                filterCharacter = results!!.values as ArrayList<CharacterRM>
+                characters = results!!.values as ArrayList<CharacterRM>
                 notifyDataSetChanged()
             }
         }
@@ -49,6 +52,7 @@ class RecyclerAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
     fun setData(character: Characters) {
         characters.clear()
         characters.addAll(character.results)
+        filterCharacter = characters
         notifyDataSetChanged()
     }
 
