@@ -1,13 +1,13 @@
 package guinea.diego.myrecycleview.servicios
 
 import android.app.Dialog
-import android.content.Context
 import android.graphics.Color
 import androidx.core.graphics.drawable.toDrawable
+import guinea.diego.myrecycleview.MainActivity
 import guinea.diego.myrecycleview.R
 
 object loadingDragon {
-    fun showLoadingDialog(context: Context): Dialog{
+    fun showLoadingDialog(context: MainActivity): Dialog{
         val progressDialog = Dialog(context)
         progressDialog.let {
             it.show()

@@ -8,7 +8,7 @@ import guinea.diego.myrecycleview.servicios.BaseCallback
 
 
 class InfoViewModel {
-    private var dataOnScreen: ArrayList<CharacterRM> = arrayListOf()
+     var dataOnScreen: ArrayList<CharacterRM> = arrayListOf()
     private val respositorio = Single.Repository()
 
     fun getAllCharacters(viewCallback: BaseCallback<Characters>){

@@ -27,4 +27,5 @@ class RetrofitInitializer(repo: String) {
 
     fun characterService() = retrofit.create(CharacterService::class.java)!!
     fun OriginService() = retrofit.create(OriginService::class.java)!!
+    fun PageCharacters() = retrofit.create(PageService::class.java)!!
 }
