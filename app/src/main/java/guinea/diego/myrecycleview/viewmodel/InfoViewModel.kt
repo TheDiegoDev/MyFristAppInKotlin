@@ -8,31 +8,30 @@ import guinea.diego.myrecycleview.servicios.BaseCallback
 
 
 class InfoViewModel {
-     var dataOnScreen: ArrayList<CharacterRM> = arrayListOf()
+     var dataOnScreen: CharacterRM? = null
     private val respositorio = Single.Repository()
 
-    fun getAllCharacters(viewCallback: BaseCallback<Characters>){
-        respositorio.getCharacters(object : BaseCallback<Characters> {
-            override fun onResult(result: Characters) {
-                dataOnScreen.clear()
-                dataOnScreen.addAll(result.results)
+    fun getAllCharacters(viewCallback: BaseCallback<CharacterRM>, personId: String){
+        respositorio.getCharactersID(object : BaseCallback<CharacterRM> {
+            override fun onResult(result: CharacterRM) {
+                dataOnScreen = result
                 viewCallback.onResult(result)
             }
             override fun onError(error: Error) {
                 viewCallback.onError(error)
             }
-        })
+        },personId)
 
     }
-    fun filterContent(persons: Int): CharacterRM? {
-        var response: CharacterRM? = null
-        for ((cont) in dataOnScreen.withIndex()){
-            if (dataOnScreen[cont].id == persons){
-                response = dataOnScreen[cont]
-            }
-        }
-        return response
-    }
+//    fun filterContent(persons: Int): CharacterRM? {
+//        var response: CharacterRM? = null
+//        for ((cont) in dataOnScreen.withIndex()){
+//            if (dataOnScreen[cont].id == persons){
+//                response = dataOnScreen[cont]
+//            }
+//        }
+//        return response
+//    }
 
 }
 

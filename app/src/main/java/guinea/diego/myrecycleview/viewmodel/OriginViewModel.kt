@@ -1,9 +1,7 @@
 package guinea.diego.myrecycleview.viewmodel
 
 import guinea.diego.myrecycleview.modelo.UrlOrigin
-import guinea.diego.myrecycleview.remote.CharacterRepository
 import guinea.diego.myrecycleview.servicios.BaseCallback
-import java.lang.Double.parseDouble
 
 class OriginViewModel {
     private val respositorio = Single.characterRepository
