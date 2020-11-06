@@ -10,5 +10,11 @@
         android:orderInCategory="100"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         />
+    <item
+        android:id="@+id/filter_button"
+        android:icon="@drawable/ic_launcher_filtter"
+        android:orderInCategory="100"
+        android:title="Item"
+        app:showAsAction="always|collapseActionView" />
 
 </menu>

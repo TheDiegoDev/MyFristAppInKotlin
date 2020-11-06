@@ -5,11 +5,13 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AbsListView
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import guinea.diego.myrecycleview.InfoCharacter
+import guinea.diego.myrecycleview.MainActivity
 import guinea.diego.myrecycleview.R
 import guinea.diego.myrecycleview.modelo.CharacterRM
 import guinea.diego.myrecycleview.modelo.Characters
@@ -17,8 +19,7 @@ import kotlinx.android.synthetic.main.characters.view.*
 import kotlin.collections.ArrayList
 
 
-class RecyclerAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerAdapter.BaseViewHolder>(), Filterable{
-
+class RecyclerAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerAdapter.BaseViewHolder>(), Filterable {
     private var characters: ArrayList<CharacterRM> = arrayListOf()
     private var filterCharacter: ArrayList<CharacterRM> = arrayListOf()
 
@@ -55,6 +56,31 @@ class RecyclerAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
         filterCharacter = characters
         notifyDataSetChanged()
     }
+    fun addData(character: ArrayList<CharacterRM>){
+        characters.clear()
+        characters.addAll(character)
+        notifyDataSetChanged()
+    }
+
+//    fun addScrollListener(){
+//        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+//                if (!recyclerView.canScrollVertically(1) && newState==RecyclerView.SCROLL_STATE_IDLE) {
+//                    showDialog()
+//                    viewModel.getPageCharacters(object : BaseCallback<Characters> {
+//                        override fun onResult(result: Characters) {
+//                            addData(result)
+//                        }
+//                        override fun onError(error: Error) {
+//                            onFaild(error)
+//                        }
+//                    })
+//
+//                }
+//                super.onScrollStateChanged(recyclerView, newState)
+//            }
+//        })
+//    }
 
     //Funcion encargada de la creacion del ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
