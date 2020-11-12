@@ -40,8 +40,10 @@ class OriginDetail: AppCompatActivity() {
     }
 
     private fun importData(result: UrlOrigin) {
-        name_planet.text = result.name
-        type_planet.text = result.type
-        dimension.text = result.dimension
+            name_planet.text = result.name
+            type_planet.text = result.type
+            dimension.text = result.dimension
+
+
     }
 }

@@ -5,15 +5,27 @@ import java.io.Serializable
 
 
 data class CharacterRM(
-    val id: Int,
-    val name: String,
-    val species: String,
-    val image: String,
-    val status: String,
-    val gender: String,
-    val type: String,
-    val origin: @RawValue Data,
-    val location: @RawValue Data) : Serializable
+    var id: Int?,
+    var name: String?,
+    var species: String?,
+    var image: String?,
+    var status: String?,
+    var gender: String?,
+    var type: String?,
+    val origin: @RawValue Data?,
+    val location: @RawValue Data?) : Serializable
+
+data class Personajes(
+    var id: Int?,
+    var name: String?,
+    var species: String?,
+    var image: String?,
+    var status: String?,
+    var gender: String?,
+    var type: String?,
+    var origin: String?,
+    var location: String?
+)
 
 data class InfoRM(
     val count: Int,

@@ -13,8 +13,10 @@ import com.bumptech.glide.Glide
 import guinea.diego.myrecycleview.InfoCharacter
 import guinea.diego.myrecycleview.MainActivity
 import guinea.diego.myrecycleview.R
+import guinea.diego.myrecycleview.local.DB_Helper
 import guinea.diego.myrecycleview.modelo.CharacterRM
 import guinea.diego.myrecycleview.modelo.Characters
+import guinea.diego.myrecycleview.modelo.Personajes
 import kotlinx.android.synthetic.main.characters.view.*
 import kotlin.collections.ArrayList
 
@@ -22,6 +24,7 @@ import kotlin.collections.ArrayList
 class RecyclerAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerAdapter.BaseViewHolder>(), Filterable {
     private var characters: ArrayList<CharacterRM> = arrayListOf()
     private var filterCharacter: ArrayList<CharacterRM> = arrayListOf()
+    //private var dataBaseCharacters: ArrayList<Personajes> = arrayListOf()
 
     override fun getFilter(): Filter {
         return object : Filter(){
@@ -34,7 +37,7 @@ class RecyclerAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
                     var searchString = constraint.toString().toLowerCase()
                     val itemModal = ArrayList<CharacterRM>()
                     for(item in filterCharacter){
-                        if(item.name.toLowerCase().contains(searchString) || item.species.toLowerCase().contains(searchString)){
+                        if(item.name!!.toLowerCase().contains(searchString) || item.species!!.toLowerCase().contains(searchString)){
                             itemModal.add(item)
                         }
                     }
@@ -54,6 +57,8 @@ class RecyclerAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
         characters.clear()
         characters.addAll(character.results)
         filterCharacter = characters
+      //  characters.clear()
+     //   characters.addAll(character)
         notifyDataSetChanged()
     }
     fun addData(character: ArrayList<CharacterRM>){
@@ -114,8 +119,6 @@ class RecyclerAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
             Glide.with(image.context)
                 .load(character.image)
                 .into(image)
-
-
         }
 
         init {
