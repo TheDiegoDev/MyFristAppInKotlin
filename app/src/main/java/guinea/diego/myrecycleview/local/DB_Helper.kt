@@ -35,23 +35,37 @@ class DB_Helper(context: Context):SQLiteOpenHelper(context, dbName, factory, ver
         }
 
     }
+    private fun compareData(id: Int):Boolean{
+        val db = this.readableDatabase
+        val query = "Select id from persons WHERE id == $id"
+        val result = db.rawQuery(query, null)
+        if (result.moveToFirst()) {
+            return false
+        }
+
+    return true
+    }
 
     private fun insertDB (response: CharacterRM){
         val db: SQLiteDatabase = writableDatabase
         val values = ContentValues()
+        val exist = response.id?.let { compareData(it) }
 
-        values.put("id", response.id)
-        values.put("name", response.name)
-        values.put("species", response.species)
-        values.put("image", response.image)
-        values.put("status", response.status)
-        values.put("gender", response.gender)
-        values.put("type", response.type)
-        values.put("location",response.location!!.name)
-        values.put("origen", response.origin!!.name)
+        if (exist!!){
+            values.put("id", response.id)
+            values.put("name", response.name)
+            values.put("species", response.species)
+            values.put("image", response.image)
+            values.put("status", response.status)
+            values.put("gender", response.gender)
+            values.put("type", response.type)
+            values.put("location",response.location!!.name)
+            values.put("origen", response.origin!!.name)
 
-        db.insert("persons", null, values)
-        Log.i("baseDiego", "$values")
+            db.insert("persons", null, values)
+            Log.i("baseDiego", "$values")
+
+        }
         db.close()
     }
 
