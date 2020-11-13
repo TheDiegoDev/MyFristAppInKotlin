@@ -7,19 +7,18 @@ import androidx.core.graphics.drawable.toDrawable
 import guinea.diego.myrecycleview.R
 import java.lang.Double
 
-
 fun Context.showLoadingDialog(): Dialog{
-        val progressDialog = Dialog(this)
-        progressDialog.let {
-            it.show()
-            it.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
-            it.setContentView(R.layout.progress_dialog)
-            it.setCancelable(false)
-            it.setCanceledOnTouchOutside(false)
+    val progressDialog = Dialog(this)
+    progressDialog.let {
+        it.show()
+        it.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
+        it.setContentView(R.layout.progress_dialog)
+        it.setCancelable(false)
+        it.setCanceledOnTouchOutside(false)
 
-            return it
-        }
+        return it
     }
+}
 
 fun String.getNumericValues(): String {
     val sb = StringBuilder()
