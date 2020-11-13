@@ -1,8 +1,7 @@
-package guinea.diego.myrecycleview.remote
+package guinea.diego.myrecycleview.Repositorio
 
 
 import RetrofitInitializer
-import bd
 import guinea.diego.myrecycleview.modelo.*
 import guinea.diego.myrecycleview.servicios.BaseCallback
 import retrofit2.Call
@@ -10,8 +9,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class CharacterRepository() {
-
-
 
     private val characterService = RetrofitInitializer(PrincipalRepo).characterService()
     private val characterIdService = RetrofitInitializer(PrincipalRepo).PersonId()

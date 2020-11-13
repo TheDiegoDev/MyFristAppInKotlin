@@ -1,22 +1,17 @@
-package guinea.diego.myrecycleview.servicios
+package guinea.diego.myrecycleview.adapter
 
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AbsListView
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import guinea.diego.myrecycleview.InfoCharacter
-import guinea.diego.myrecycleview.MainActivity
 import guinea.diego.myrecycleview.R
-import guinea.diego.myrecycleview.local.DB_Helper
 import guinea.diego.myrecycleview.modelo.CharacterRM
-import guinea.diego.myrecycleview.modelo.Characters
-import guinea.diego.myrecycleview.modelo.Personajes
 import kotlinx.android.synthetic.main.characters.view.*
 import kotlin.collections.ArrayList
 
@@ -53,9 +48,9 @@ class RecyclerAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
         }
     }
 
-    fun setData(character: Characters) {
+    fun setData(character: ArrayList<CharacterRM>) {
         characters.clear()
-        characters.addAll(character.results)
+        characters.addAll(character)
         filterCharacter = characters
       //  characters.clear()
      //   characters.addAll(character)

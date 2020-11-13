@@ -1,5 +1,7 @@
 package guinea.diego.myrecycleview.modelo
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 import kotlinx.android.parcel.RawValue
 import java.io.Serializable
 
@@ -15,17 +17,12 @@ data class CharacterRM(
     val origin: @RawValue Data?,
     val location: @RawValue Data?) : Serializable
 
-data class Personajes(
-    var id: Int?,
-    var name: String?,
-    var species: String?,
-    var image: String?,
-    var status: String?,
-    var gender: String?,
-    var type: String?,
-    var origin: String?,
-    var location: String?
-)
+@Parcelize
+data class Data(
+    var name: String,
+    val url: String
+) : Parcelable
+
 
 data class InfoRM(
     val count: Int,

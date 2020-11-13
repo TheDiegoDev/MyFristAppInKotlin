@@ -1,6 +1,5 @@
 import guinea.diego.myrecycleview.local.DB_Helper
-import guinea.diego.myrecycleview.modelo.CharacterRM
-import guinea.diego.myrecycleview.remote.CharacterRepository
+import guinea.diego.myrecycleview.Repositorio.CharacterRepository
 
 object Single{
     val characterRepository: CharacterRepository = CharacterRepository()

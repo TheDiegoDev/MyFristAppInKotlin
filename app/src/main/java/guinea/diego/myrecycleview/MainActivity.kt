@@ -9,13 +9,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.*
 import guinea.diego.myrecycleview.local.DB_Helper
-//import guinea.diego.myrecycleview.local.PersonApp
 import guinea.diego.myrecycleview.modelo.CharacterRM
 import guinea.diego.myrecycleview.modelo.Characters
-import guinea.diego.myrecycleview.modelo.Personajes
 import guinea.diego.myrecycleview.servicios.BaseCallback
-import guinea.diego.myrecycleview.servicios.RecyclerAdapter
-import guinea.diego.myrecycleview.servicios.loadingDragon
+import guinea.diego.myrecycleview.adapter.RecyclerAdapter
+import guinea.diego.myrecycleview.servicios.showLoadingDialog
 import guinea.diego.myrecycleview.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.collections.ArrayList
@@ -85,7 +83,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun onFaild(t: Throwable) {
         stopAnimacion()
-        errorTxt.text = t.message
+        if(handler.readData() != null){
+            dataBaseCharacters = handler.readData()
+            (recyclerView.adapter as RecyclerAdapter).setData(dataBaseCharacters)
+        }
     }
 
 
@@ -115,13 +116,13 @@ class MainActivity : AppCompatActivity() {
     }
     private fun showDialog(){
         hideLoading()
-        loadingDialog = loadingDragon.showLoadingDialog(this)
+        loadingDialog = this.showLoadingDialog()
     }
 
     private fun stopAnimacion() {
         Handler().postDelayed({
             hideLoading()
-        }, 0)
+        }, 1)
     }
 
 
@@ -152,7 +153,7 @@ class MainActivity : AppCompatActivity() {
         mainCharacters.addAll(data.results)
         handler.importData(data)
         dataBaseCharacters =  handler.readData()
-        (recyclerView.adapter as RecyclerAdapter).setData(data)
+        (recyclerView.adapter as RecyclerAdapter).setData(mainCharacters)
     }
 
 

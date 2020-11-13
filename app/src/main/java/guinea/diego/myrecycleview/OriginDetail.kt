@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import guinea.diego.myrecycleview.modelo.*
 import guinea.diego.myrecycleview.servicios.BaseCallback
-import guinea.diego.myrecycleview.servicios.NumericValues
+import guinea.diego.myrecycleview.servicios.getNumericValues
 import guinea.diego.myrecycleview.viewmodel.OriginViewModel
 import kotlinx.android.synthetic.main.origin_detall.*
 
@@ -23,7 +23,7 @@ class OriginDetail: AppCompatActivity() {
 
     private fun configPage() {
         val urlRepo = intent.getStringExtra("url")
-        val numLocation = NumericValues().getNumericValues(urlRepo.toString())
+        val numLocation = urlRepo?.getNumericValues().toString()
          viewModel.getOriginUrl(object : BaseCallback<UrlOrigin> {
             override fun onResult(result: UrlOrigin) {
                 importData(result)
