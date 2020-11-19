@@ -19,8 +19,8 @@ data class CharacterRM(
 
 @Parcelize
 data class Data(
-    var name: String,
-    val url: String
+    var name: String?,
+    val url: String?
 ) : Parcelable
 
 
@@ -31,13 +31,13 @@ data class InfoRM(
     val prev: String): Serializable
 
 data class UrlOrigin(
-    val id: Int,
-    val name: String,
-    val type: String,
-    val dimension: String): Serializable
+    var id: Int?,
+    var name: String?,
+    var type: String?,
+    var dimension: String?): Serializable
 
 
-class Characters(val results: List<CharacterRM>) //,val info: @RawValue Data
+class Characters(val results: List<CharacterRM>)
 
 
 

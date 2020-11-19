@@ -19,7 +19,6 @@ import kotlin.collections.ArrayList
 class RecyclerAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerAdapter.BaseViewHolder>(), Filterable {
     private var characters: ArrayList<CharacterRM> = arrayListOf()
     private var filterCharacter: ArrayList<CharacterRM> = arrayListOf()
-    //private var dataBaseCharacters: ArrayList<Personajes> = arrayListOf()
 
     override fun getFilter(): Filter {
         return object : Filter(){
@@ -52,8 +51,6 @@ class RecyclerAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
         characters.clear()
         characters.addAll(character)
         filterCharacter = characters
-      //  characters.clear()
-     //   characters.addAll(character)
         notifyDataSetChanged()
     }
     fun addData(character: ArrayList<CharacterRM>){
@@ -61,26 +58,6 @@ class RecyclerAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
         characters.addAll(character)
         notifyDataSetChanged()
     }
-
-//    fun addScrollListener(){
-//        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
-//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                if (!recyclerView.canScrollVertically(1) && newState==RecyclerView.SCROLL_STATE_IDLE) {
-//                    showDialog()
-//                    viewModel.getPageCharacters(object : BaseCallback<Characters> {
-//                        override fun onResult(result: Characters) {
-//                            addData(result)
-//                        }
-//                        override fun onError(error: Error) {
-//                            onFaild(error)
-//                        }
-//                    })
-//
-//                }
-//                super.onScrollStateChanged(recyclerView, newState)
-//            }
-//        })
-//    }
 
     //Funcion encargada de la creacion del ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {

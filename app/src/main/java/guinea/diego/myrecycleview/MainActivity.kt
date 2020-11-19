@@ -83,8 +83,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun onFaild(t: Throwable) {
         stopAnimacion()
-        if(handler.readData() != null){
-            dataBaseCharacters = handler.readData()
+        if(handler.readCharactersData() != null){
+            dataBaseCharacters = handler.readCharactersData()
             (recyclerView.adapter as RecyclerAdapter).setData(dataBaseCharacters)
         }
     }
@@ -151,16 +151,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateData(data: Characters) {
         mainCharacters.addAll(data.results)
-        handler.importData(data)
-        dataBaseCharacters =  handler.readData()
+        handler.importDataCharacters(data)
+        dataBaseCharacters =  handler.readCharactersData()
         (recyclerView.adapter as RecyclerAdapter).setData(mainCharacters)
     }
 
 
     private fun addData(result: Characters) {
         mainCharacters.addAll(result.results)
-        handler.importData(result)
-        dataBaseCharacters = handler.readData()
+        handler.importDataCharacters(result)
+        dataBaseCharacters = handler.readCharactersData()
         (recyclerView.adapter as RecyclerAdapter).addData(mainCharacters)
         stopAnimacion()
     }
