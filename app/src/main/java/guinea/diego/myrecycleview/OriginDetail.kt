@@ -3,9 +3,11 @@ package guinea.diego.myrecycleview
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import guinea.diego.myrecycleview.local.DB_Helper
 import guinea.diego.myrecycleview.modelo.*
 import guinea.diego.myrecycleview.servicios.BaseCallback
+import guinea.diego.myrecycleview.servicios.Connectivity
 import guinea.diego.myrecycleview.servicios.getNumericValues
 import guinea.diego.myrecycleview.viewmodel.OriginViewModel
 import kotlinx.android.synthetic.main.origin_detall.*
@@ -29,28 +31,26 @@ class OriginDetail: AppCompatActivity() {
         val urlRepo = intent.getStringExtra("url")
         val planet = intent.getStringExtra("name")
         val numLocation = urlRepo?.getNumericValues().toString()
-         viewModel.getOriginUrl(object : BaseCallback<UrlOrigin> {
-            override fun onResult(result: UrlOrigin) {
-                handler.importDataUrl(result)
-                importData(result)
-            }
-
-            override fun onError(error: Error) {
-                planet?.let { onFaild(error, it) }
-            }
-        }, numLocation)
+        Observer(planet)
+        viewModel.getOriginUrl(numLocation)
     }
 
-    private fun onFaild(error: Error, planet: String) {
-        val response = handler.readUrlData(planet)
-        if(response != null){
-            name_planet.text = response.name
-            type_planet.text = response.name
-            dimension.text = response.dimension
+    fun Observer(name: String?){
+        if(Connectivity().isConnected(this)){
+            viewModel.viewMLD.observe(this, Observer {
+                handler.importDataUrl(it)
+                importData(it)
+            })
         }else{
-            error_txt.text = "$error"
+            name?.let { onFaild(it) }
         }
+    }
 
+    private fun onFaild(planet: String) {
+        val response = handler.readUrlData(planet)
+            name_planet.text = response.name
+            type_planet.text = response.type
+            dimension.text = response.dimension
     }
 
     private fun importData(result: UrlOrigin) {
