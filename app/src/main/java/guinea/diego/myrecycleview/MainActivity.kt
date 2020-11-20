@@ -8,11 +8,12 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.*
+import guinea.diego.myrecycleview.local.DB_Helper
 import guinea.diego.myrecycleview.modelo.CharacterRM
 import guinea.diego.myrecycleview.modelo.Characters
 import guinea.diego.myrecycleview.servicios.BaseCallback
-import guinea.diego.myrecycleview.servicios.RecyclerAdapter
-import guinea.diego.myrecycleview.servicios.loadingDragon
+import guinea.diego.myrecycleview.adapter.RecyclerAdapter
+import guinea.diego.myrecycleview.servicios.showLoadingDialog
 import guinea.diego.myrecycleview.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.collections.ArrayList
@@ -22,11 +23,15 @@ class MainActivity : AppCompatActivity() {
     private val viewModel = MainViewModel()
     private var listAdapter: RecyclerAdapter? = null
     private var mainCharacters: ArrayList<CharacterRM> = arrayListOf()
+    lateinit var handler: DB_Helper
+    private var dataBaseCharacters: ArrayList<CharacterRM> = ArrayList()
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        handler = DB_Helper(this)
         showDialog()
         initAdapter()
     }
@@ -51,8 +56,7 @@ class MainActivity : AppCompatActivity() {
         })
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (!recyclerView.canScrollVertically(1) && newState==RecyclerView.SCROLL_STATE_IDLE) {
-                    showDialog()
+                if (recyclerView.canScrollVertically(1) && newState==RecyclerView.SCROLL_STATE_IDLE) {
                     viewModel.getPageCharacters(object : BaseCallback<Characters> {
                         override fun onResult(result: Characters) {
                             addData(result)
@@ -61,7 +65,6 @@ class MainActivity : AppCompatActivity() {
                             onFaild(error)
                         }
                     })
-
                 }
                 super.onScrollStateChanged(recyclerView, newState)
             }
@@ -80,7 +83,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun onFaild(t: Throwable) {
         stopAnimacion()
-        errorTxt.text = t.message
+        if(handler.readCharactersData() != null){
+            dataBaseCharacters = handler.readCharactersData()
+            (recyclerView.adapter as RecyclerAdapter).setData(dataBaseCharacters)
+        }
     }
 
 
@@ -110,13 +116,13 @@ class MainActivity : AppCompatActivity() {
     }
     private fun showDialog(){
         hideLoading()
-        loadingDialog = loadingDragon.showLoadingDialog(this)
+        loadingDialog = this.showLoadingDialog()
     }
 
     private fun stopAnimacion() {
         Handler().postDelayed({
             hideLoading()
-        }, 0)
+        }, 1)
     }
 
 
@@ -145,13 +151,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateData(data: Characters) {
         mainCharacters.addAll(data.results)
-        (recyclerView.adapter as RecyclerAdapter).setData(data)
+        handler.importDataCharacters(data)
+        dataBaseCharacters =  handler.readCharactersData()
+        (recyclerView.adapter as RecyclerAdapter).setData(mainCharacters)
     }
 
 
     private fun addData(result: Characters) {
         mainCharacters.addAll(result.results)
-      //  InfoViewModel().dataOnScreen = mainCharacters
+        handler.importDataCharacters(result)
+        dataBaseCharacters = handler.readCharactersData()
         (recyclerView.adapter as RecyclerAdapter).addData(mainCharacters)
         stopAnimacion()
     }

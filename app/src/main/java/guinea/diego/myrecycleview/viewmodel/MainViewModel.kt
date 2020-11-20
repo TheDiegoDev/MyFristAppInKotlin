@@ -25,18 +25,18 @@ class MainViewModel() {
             }
         })
     }
-    fun getPageCharacters(viewCallback: BaseCallback<Characters>){
+    fun getPageCharacters(viewCallback: BaseCallback<Characters>) {
         val num = cont.toString()
         respositorio.getDataScroll(object : BaseCallback<Characters> {
             override fun onResult(result: Characters) {
                 viewCallback.onResult(result)
                 cont = cont + 1
             }
+
             override fun onError(error: Error) {
                 viewCallback.onError(error)
             }
-        },num)
-
+        }, num)
     }
 }
 

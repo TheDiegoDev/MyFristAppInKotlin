@@ -1,20 +1,17 @@
-package guinea.diego.myrecycleview.servicios
+package guinea.diego.myrecycleview.adapter
 
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AbsListView
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import guinea.diego.myrecycleview.InfoCharacter
-import guinea.diego.myrecycleview.MainActivity
 import guinea.diego.myrecycleview.R
 import guinea.diego.myrecycleview.modelo.CharacterRM
-import guinea.diego.myrecycleview.modelo.Characters
 import kotlinx.android.synthetic.main.characters.view.*
 import kotlin.collections.ArrayList
 
@@ -34,7 +31,7 @@ class RecyclerAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
                     var searchString = constraint.toString().toLowerCase()
                     val itemModal = ArrayList<CharacterRM>()
                     for(item in filterCharacter){
-                        if(item.name.toLowerCase().contains(searchString) || item.species.toLowerCase().contains(searchString)){
+                        if(item.name!!.toLowerCase().contains(searchString) || item.species!!.toLowerCase().contains(searchString)){
                             itemModal.add(item)
                         }
                     }
@@ -50,9 +47,9 @@ class RecyclerAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
         }
     }
 
-    fun setData(character: Characters) {
+    fun setData(character: ArrayList<CharacterRM>) {
         characters.clear()
-        characters.addAll(character.results)
+        characters.addAll(character)
         filterCharacter = characters
         notifyDataSetChanged()
     }
@@ -61,26 +58,6 @@ class RecyclerAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
         characters.addAll(character)
         notifyDataSetChanged()
     }
-
-//    fun addScrollListener(){
-//        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
-//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                if (!recyclerView.canScrollVertically(1) && newState==RecyclerView.SCROLL_STATE_IDLE) {
-//                    showDialog()
-//                    viewModel.getPageCharacters(object : BaseCallback<Characters> {
-//                        override fun onResult(result: Characters) {
-//                            addData(result)
-//                        }
-//                        override fun onError(error: Error) {
-//                            onFaild(error)
-//                        }
-//                    })
-//
-//                }
-//                super.onScrollStateChanged(recyclerView, newState)
-//            }
-//        })
-//    }
 
     //Funcion encargada de la creacion del ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
@@ -114,8 +91,6 @@ class RecyclerAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
             Glide.with(image.context)
                 .load(character.image)
                 .into(image)
-
-
         }
 
         init {

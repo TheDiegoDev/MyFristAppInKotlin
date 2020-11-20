@@ -1,4 +1,4 @@
-package guinea.diego.myrecycleview.remote
+package guinea.diego.myrecycleview.Repositorio
 
 
 import RetrofitInitializer
@@ -8,7 +8,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CharacterRepository {
+class CharacterRepository() {
 
     private val characterService = RetrofitInitializer(PrincipalRepo).characterService()
     private val characterIdService = RetrofitInitializer(PrincipalRepo).PersonId()
@@ -32,7 +32,6 @@ class CharacterRepository {
             }
         })
     }
-
     fun getCharactersID(callback: BaseCallback<CharacterRM>,personId:String) {
 
         characterIdService.getPerson(personId).enqueue(object : Callback<CharacterRM> {
