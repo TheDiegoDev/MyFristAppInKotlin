@@ -1,12 +1,13 @@
-package guinea.diego.myrecycleview
+package guinea.diego.myrecycleview.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import guinea.diego.myrecycleview.local.DB_Helper
-import guinea.diego.myrecycleview.modelo.*
-import guinea.diego.myrecycleview.servicios.getNumericValues
-import guinea.diego.myrecycleview.viewmodel.OriginViewModel
+import guinea.diego.myrecycleview.R
+import guinea.diego.myrecycleview.data.local.DB_Helper
+import guinea.diego.myrecycleview.data.modelo.*
+import guinea.diego.myrecycleview.utils.getNumericValues
+import guinea.diego.myrecycleview.ui.viewmodel.OriginViewModel
 import kotlinx.android.synthetic.main.origin_detall.*
 
 
@@ -28,8 +29,8 @@ class OriginDetail: AppCompatActivity() {
         val urlRepo = intent.getStringExtra("url")
         val planet = intent.getStringExtra("name")
         val numLocation = urlRepo?.getNumericValues().toString()
-        Observer(planet)
         viewModel.getOriginUrl(numLocation)
+        Observer(planet)
     }
 
     fun Observer(name: String?){
@@ -42,12 +43,12 @@ class OriginDetail: AppCompatActivity() {
             if (it != null && valorURl == null){
                 error_txt.text = it.toString()
             }else{
-                onFaild(valorURl)
+                ShowDB(valorURl)
             }
         })
     }
 
-    private fun onFaild(valorUrl: UrlOrigin?) {
+    private fun ShowDB(valorUrl: UrlOrigin?) {
             name_planet.text = valorUrl?.name
             type_planet.text = valorUrl?.type
             dimension.text = valorUrl?.dimension

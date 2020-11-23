@@ -1,7 +1,7 @@
 
-import guinea.diego.myrecycleview.modelo.CharacterRM
-import guinea.diego.myrecycleview.modelo.Characters
-import guinea.diego.myrecycleview.modelo.UrlOrigin
+import guinea.diego.myrecycleview.data.modelo.CharacterRM
+import guinea.diego.myrecycleview.data.modelo.Characters
+import guinea.diego.myrecycleview.data.modelo.UrlOrigin
 import retrofit2.Call
 import retrofit2.http.*
 

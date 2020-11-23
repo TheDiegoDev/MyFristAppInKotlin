@@ -1,4 +1,4 @@
-package guinea.diego.myrecycleview.modelo
+package guinea.diego.myrecycleview.data.modelo
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

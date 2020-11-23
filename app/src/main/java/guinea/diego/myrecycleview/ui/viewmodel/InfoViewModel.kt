@@ -1,13 +1,11 @@
-package guinea.diego.myrecycleview.viewmodel
+package guinea.diego.myrecycleview.ui.viewmodel
 
 
 import Single
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import guinea.diego.myrecycleview.modelo.CharacterRM
-import guinea.diego.myrecycleview.modelo.Characters
-import guinea.diego.myrecycleview.modelo.UrlOrigin
-import guinea.diego.myrecycleview.servicios.BaseCallback
+import guinea.diego.myrecycleview.data.modelo.CharacterRM
+import guinea.diego.myrecycleview.utils.BaseCallback
 
 
 class InfoViewModel: ViewModel() {

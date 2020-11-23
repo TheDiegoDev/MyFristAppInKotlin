@@ -1,10 +1,9 @@
-package guinea.diego.myrecycleview.viewmodel
+package guinea.diego.myrecycleview.ui.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import guinea.diego.myrecycleview.MainActivity
-import guinea.diego.myrecycleview.servicios.BaseCallback
-import guinea.diego.myrecycleview.modelo.Characters
+import guinea.diego.myrecycleview.utils.BaseCallback
+import guinea.diego.myrecycleview.data.modelo.Characters
 
 class MainViewModel: ViewModel() {
     private val respositorio = Single.characterRepository

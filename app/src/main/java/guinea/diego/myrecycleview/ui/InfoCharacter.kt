@@ -1,13 +1,14 @@
-package guinea.diego.myrecycleview
+package guinea.diego.myrecycleview.ui
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
-import guinea.diego.myrecycleview.local.DB_Helper
-import guinea.diego.myrecycleview.modelo.CharacterRM
-import guinea.diego.myrecycleview.viewmodel.InfoViewModel
+import guinea.diego.myrecycleview.R
+import guinea.diego.myrecycleview.data.local.DB_Helper
+import guinea.diego.myrecycleview.data.modelo.CharacterRM
+import guinea.diego.myrecycleview.ui.viewmodel.InfoViewModel
 import kotlinx.android.synthetic.main.info_character.*
 
 class InfoCharacter : AppCompatActivity() {
@@ -29,19 +30,18 @@ class InfoCharacter : AppCompatActivity() {
         Observable(personsID)
     }
 
-    fun Observable(id: Int){
-            viewModel.viewMLD.observe(this, Observer {
-                importData(it)
-            })
-            viewModel.viewErrorMLD.observe(this, Observer {
-                dataBaseCharacters = handler.readCharactersData()
-                if(it != null && dataBaseCharacters == null){
-                    error_txt.text = it.toString()
-                }else{
-                    ShowDataBase(dataBaseCharacters[id])
-                }
-
-            })
+    private fun Observable(id: Int){
+        viewModel.viewMLD.observe(this, Observer {
+            importData(it)
+        })
+        viewModel.viewErrorMLD.observe(this, Observer {
+            dataBaseCharacters = handler.readCharactersData()
+            if(it != null && dataBaseCharacters == null){
+                error_txt.text = it.toString()
+            }else{
+                ShowDataBase(dataBaseCharacters[id])
+            }
+        })
     }
 
     private fun ShowDataBase(characters: CharacterRM) {

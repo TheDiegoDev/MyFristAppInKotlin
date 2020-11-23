@@ -1,4 +1,4 @@
-package guinea.diego.myrecycleview.modelo
+package guinea.diego.myrecycleview.data.local
 
 
 const val PrincipalRepo = "https://rickandmortyapi.com/api/"

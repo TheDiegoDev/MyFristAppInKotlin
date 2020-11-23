@@ -1,4 +1,4 @@
-package guinea.diego.myrecycleview
+package guinea.diego.myrecycleview.ui
 
 
 import android.app.Dialog
@@ -11,13 +11,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.*
-import guinea.diego.myrecycleview.local.DB_Helper
-import guinea.diego.myrecycleview.modelo.CharacterRM
-import guinea.diego.myrecycleview.modelo.Characters
-import guinea.diego.myrecycleview.adapter.RecyclerAdapter
-import guinea.diego.myrecycleview.servicios.Connectivity
-import guinea.diego.myrecycleview.servicios.showLoadingDialog
-import guinea.diego.myrecycleview.viewmodel.MainViewModel
+import guinea.diego.myrecycleview.R
+import guinea.diego.myrecycleview.data.local.DB_Helper
+import guinea.diego.myrecycleview.data.modelo.CharacterRM
+import guinea.diego.myrecycleview.data.modelo.Characters
+import guinea.diego.myrecycleview.ui.adapter.RecyclerAdapter
+import guinea.diego.myrecycleview.utils.showLoadingDialog
+import guinea.diego.myrecycleview.ui.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.collections.ArrayList
 
@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity() {
         })
         return true
     }
-        override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == R.id.filter_button){
           

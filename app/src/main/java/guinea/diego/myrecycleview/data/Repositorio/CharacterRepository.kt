@@ -1,9 +1,10 @@
-package guinea.diego.myrecycleview.Repositorio
+package guinea.diego.myrecycleview.data.Repositorio
 
 
 import RetrofitInitializer
-import guinea.diego.myrecycleview.modelo.*
-import guinea.diego.myrecycleview.servicios.BaseCallback
+import guinea.diego.myrecycleview.data.local.PrincipalRepo
+import guinea.diego.myrecycleview.data.modelo.*
+import guinea.diego.myrecycleview.utils.BaseCallback
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

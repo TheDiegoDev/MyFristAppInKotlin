@@ -1,13 +1,17 @@
-package guinea.diego.myrecycleview.local
+package guinea.diego.myrecycleview.data.local
 
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
-import guinea.diego.myrecycleview.modelo.*
+import guinea.diego.myrecycleview.data.modelo.*
 
-class DB_Helper(context: Context):SQLiteOpenHelper(context, dbName, factory, versionDB) {
+class DB_Helper(context: Context):SQLiteOpenHelper(context,
+    dbName,
+    factory,
+    versionDB
+) {
     private var characters: ArrayList<CharacterRM> = arrayListOf()
     private var id: Int? = null
 

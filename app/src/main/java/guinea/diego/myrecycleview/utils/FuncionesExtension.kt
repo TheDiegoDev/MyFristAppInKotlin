@@ -1,4 +1,4 @@
-package guinea.diego.myrecycleview.servicios
+package guinea.diego.myrecycleview.utils
 
 import android.app.Dialog
 import android.content.Context
@@ -16,7 +16,6 @@ fun Context.showLoadingDialog(): Dialog{
             it.setContentView(R.layout.progress_dialog)
             it.setCancelable(false)
             it.setCanceledOnTouchOutside(false)
-
             return it
         }
     }

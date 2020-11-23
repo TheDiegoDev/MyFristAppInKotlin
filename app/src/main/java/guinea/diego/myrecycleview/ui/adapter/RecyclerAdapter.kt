@@ -1,4 +1,4 @@
-package guinea.diego.myrecycleview.adapter
+package guinea.diego.myrecycleview.ui.adapter
 
 import android.content.Context
 import android.content.Intent
@@ -9,9 +9,9 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import guinea.diego.myrecycleview.InfoCharacter
+import guinea.diego.myrecycleview.ui.InfoCharacter
 import guinea.diego.myrecycleview.R
-import guinea.diego.myrecycleview.modelo.CharacterRM
+import guinea.diego.myrecycleview.data.modelo.CharacterRM
 import kotlinx.android.synthetic.main.characters.view.*
 import kotlin.collections.ArrayList
 
@@ -92,7 +92,6 @@ class RecyclerAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
                 .load(character.image)
                 .into(image)
         }
-
         init {
             //TODO esto debería llamarse desde el activity, mediante un handler o algo similar.
             //Evento de click en un item del recyclerView
