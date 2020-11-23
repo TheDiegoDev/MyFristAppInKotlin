@@ -3,17 +3,16 @@ package guinea.diego.myrecycleview
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import guinea.diego.myrecycleview.local.DB_Helper
 import guinea.diego.myrecycleview.modelo.CharacterRM
-import guinea.diego.myrecycleview.servicios.BaseCallback
 import guinea.diego.myrecycleview.viewmodel.InfoViewModel
 import kotlinx.android.synthetic.main.info_character.*
 
 class InfoCharacter : AppCompatActivity() {
 
     private val viewModel = InfoViewModel()
-    private var result: CharacterRM? = null
     lateinit var handler: DB_Helper
     private var dataBaseCharacters: ArrayList<CharacterRM> = ArrayList()
 
@@ -26,19 +25,26 @@ class InfoCharacter : AppCompatActivity() {
 
     private fun configPage(){
         val personsID = intent.getIntExtra("persons", 0)
-
-        viewModel.getAllCharacters(object : BaseCallback<CharacterRM> {
-            override fun onResult(result: CharacterRM) {
-                importData(result)
-            }
-            override fun onError(error: Error) {
-                dataBaseCharacters = handler.readCharactersData()
-                showError(error, dataBaseCharacters[personsID])
-            }
-        },personsID.toString())
+        viewModel.getAllCharacters(personsID.toString())
+        Observable(personsID)
     }
-    private fun showError(error: Error, characters: CharacterRM) {
-        if (characters != null){
+
+    fun Observable(id: Int){
+            viewModel.viewMLD.observe(this, Observer {
+                importData(it)
+            })
+            viewModel.viewErrorMLD.observe(this, Observer {
+                dataBaseCharacters = handler.readCharactersData()
+                if(it != null && dataBaseCharacters == null){
+                    error_txt.text = it.toString()
+                }else{
+                    ShowDataBase(dataBaseCharacters[id])
+                }
+
+            })
+    }
+
+    private fun ShowDataBase(characters: CharacterRM) {
             name_character.text = characters.name
             raza_character.text = characters.species
             status_character.text = characters.status
@@ -56,9 +62,6 @@ class InfoCharacter : AppCompatActivity() {
                 intent.putExtra("name", characters.origin?.name)
                 startActivity(intent)
             }
-        }else{
-            error_txt.text = "$error"
-        }
     }
 
     private fun importData(result: CharacterRM) {

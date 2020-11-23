@@ -2,37 +2,31 @@ package guinea.diego.myrecycleview.viewmodel
 
 
 import Single
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import guinea.diego.myrecycleview.modelo.CharacterRM
 import guinea.diego.myrecycleview.modelo.Characters
+import guinea.diego.myrecycleview.modelo.UrlOrigin
 import guinea.diego.myrecycleview.servicios.BaseCallback
 
 
-class InfoViewModel {
-     var dataOnScreen: CharacterRM? = null
-    private val respositorio = Single.Repository()
+class InfoViewModel: ViewModel() {
 
-    fun getAllCharacters(viewCallback: BaseCallback<CharacterRM>, personId: String){
+    private val respositorio = Single.Repository()
+    val viewMLD = MutableLiveData<CharacterRM>()
+    val viewErrorMLD = MutableLiveData<Error>()
+
+    fun getAllCharacters(personId: String){
         respositorio.getCharactersID(object : BaseCallback<CharacterRM> {
             override fun onResult(result: CharacterRM) {
-                dataOnScreen = result
-                viewCallback.onResult(result)
+                viewMLD.value = result
             }
             override fun onError(error: Error) {
-                viewCallback.onError(error)
+                viewErrorMLD.value = error
             }
         },personId)
 
     }
-//    fun filterContent(persons: Int): CharacterRM? {
-//        var response: CharacterRM? = null
-//        for ((cont) in dataOnScreen.withIndex()){
-//            if (dataOnScreen[cont].id == persons){
-//                response = dataOnScreen[cont]
-//            }
-//        }
-//        return response
-//    }
-
 }
 
 

@@ -1,11 +1,10 @@
 package guinea.diego.myrecycleview
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import guinea.diego.myrecycleview.local.DB_Helper
 import guinea.diego.myrecycleview.modelo.*
-import guinea.diego.myrecycleview.servicios.BaseCallback
 import guinea.diego.myrecycleview.servicios.getNumericValues
 import guinea.diego.myrecycleview.viewmodel.OriginViewModel
 import kotlinx.android.synthetic.main.origin_detall.*
@@ -29,28 +28,29 @@ class OriginDetail: AppCompatActivity() {
         val urlRepo = intent.getStringExtra("url")
         val planet = intent.getStringExtra("name")
         val numLocation = urlRepo?.getNumericValues().toString()
-         viewModel.getOriginUrl(object : BaseCallback<UrlOrigin> {
-            override fun onResult(result: UrlOrigin) {
-                handler.importDataUrl(result)
-                importData(result)
-            }
-
-            override fun onError(error: Error) {
-                planet?.let { onFaild(error, it) }
-            }
-        }, numLocation)
+        Observer(planet)
+        viewModel.getOriginUrl(numLocation)
     }
 
-    private fun onFaild(error: Error, planet: String) {
-        val response = handler.readUrlData(planet)
-        if(response != null){
-            name_planet.text = response.name
-            type_planet.text = response.name
-            dimension.text = response.dimension
-        }else{
-            error_txt.text = "$error"
-        }
+    fun Observer(name: String?){
+        viewModel.viewMLD.observe(this, Observer {
+            handler.importDataUrl(it)
+            importData(it)
+        })
+        viewModel.viewErrorMLD.observe(this, Observer {
+            val valorURl = name?.let { handler.readUrlData(it)}
+            if (it != null && valorURl == null){
+                error_txt.text = it.toString()
+            }else{
+                onFaild(valorURl)
+            }
+        })
+    }
 
+    private fun onFaild(valorUrl: UrlOrigin?) {
+            name_planet.text = valorUrl?.name
+            type_planet.text = valorUrl?.type
+            dimension.text = valorUrl?.dimension
     }
 
     private fun importData(result: UrlOrigin) {
