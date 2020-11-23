@@ -1,26 +1,19 @@
 package guinea.diego.myrecycleview
 
-import android.app.Activity
+
 import android.app.Dialog
-import android.app.Service
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.Network
-import android.net.NetworkInfo
 import android.os.Bundle
 import android.os.Handler
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.getSystemService
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.*
 import guinea.diego.myrecycleview.local.DB_Helper
 import guinea.diego.myrecycleview.modelo.CharacterRM
 import guinea.diego.myrecycleview.modelo.Characters
-import guinea.diego.myrecycleview.servicios.BaseCallback
 import guinea.diego.myrecycleview.adapter.RecyclerAdapter
 import guinea.diego.myrecycleview.servicios.Connectivity
 import guinea.diego.myrecycleview.servicios.showLoadingDialog
@@ -36,8 +29,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var handler: DB_Helper
     private var dataBaseCharacters: ArrayList<CharacterRM> = ArrayList()
     private var loadingDialog: Dialog? = null
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,14 +61,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun Observer(){
-        if (Connectivity().isConnected(this)){
             viewModel.viewMLD.observe(this, Observer {
                 onResp(it)
             })
-        }else{
-            onFaild()
-        }
-
+            viewModel.viewErrorMLD.observe(this, Observer {
+                if (handler.readCharactersData() == null && it != null){
+                    stopAnimacion()
+                    errorTxt.text = it.toString()
+                }else{
+                    ShowDataBase()
+                }
+            })
     }
 
     private fun onResp(response: Characters) {
@@ -88,20 +82,15 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
-    private fun onFaild() {
+    private fun ShowDataBase() {
         stopAnimacion()
-        if(handler.readCharactersData() != null){
             dataBaseCharacters = handler.readCharactersData()
             (recyclerView.adapter as RecyclerAdapter).setData(dataBaseCharacters)
-        }else{
-            errorTxt.text = "Error"
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         val menuItem = menu!!.findItem(R.id.action_search)
-
         val searchView = menuItem.actionView as SearchView
         searchView.maxWidth = Int.MAX_VALUE
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
@@ -115,6 +104,13 @@ class MainActivity : AppCompatActivity() {
                 }
         })
         return true
+    }
+        override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+        if (id == R.id.filter_button){
+          
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun hideLoading(){

@@ -7,8 +7,6 @@ import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import guinea.diego.myrecycleview.local.DB_Helper
 import guinea.diego.myrecycleview.modelo.CharacterRM
-import guinea.diego.myrecycleview.servicios.BaseCallback
-import guinea.diego.myrecycleview.servicios.Connectivity
 import guinea.diego.myrecycleview.viewmodel.InfoViewModel
 import kotlinx.android.synthetic.main.info_character.*
 
@@ -32,18 +30,21 @@ class InfoCharacter : AppCompatActivity() {
     }
 
     fun Observable(id: Int){
-        if (Connectivity().isConnected(this)){
             viewModel.viewMLD.observe(this, Observer {
                 importData(it)
             })
-        }else{
-            dataBaseCharacters = handler.readCharactersData()
-            showError(dataBaseCharacters[id])
-        }
+            viewModel.viewErrorMLD.observe(this, Observer {
+                dataBaseCharacters = handler.readCharactersData()
+                if(it != null && dataBaseCharacters == null){
+                    error_txt.text = it.toString()
+                }else{
+                    ShowDataBase(dataBaseCharacters[id])
+                }
 
+            })
     }
-    private fun showError( characters: CharacterRM) {
-        if (characters != null){
+
+    private fun ShowDataBase(characters: CharacterRM) {
             name_character.text = characters.name
             raza_character.text = characters.species
             status_character.text = characters.status
@@ -61,9 +62,6 @@ class InfoCharacter : AppCompatActivity() {
                 intent.putExtra("name", characters.origin?.name)
                 startActivity(intent)
             }
-        }else{
-            error_txt.text = "Error"
-        }
     }
 
     private fun importData(result: CharacterRM) {

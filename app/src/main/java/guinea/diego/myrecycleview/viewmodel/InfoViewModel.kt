@@ -14,13 +14,16 @@ class InfoViewModel: ViewModel() {
 
     private val respositorio = Single.Repository()
     val viewMLD = MutableLiveData<CharacterRM>()
+    val viewErrorMLD = MutableLiveData<Error>()
 
     fun getAllCharacters(personId: String){
         respositorio.getCharactersID(object : BaseCallback<CharacterRM> {
             override fun onResult(result: CharacterRM) {
                 viewMLD.value = result
             }
-            override fun onError(error: Error) {}
+            override fun onError(error: Error) {
+                viewErrorMLD.value = error
+            }
         },personId)
 
     }

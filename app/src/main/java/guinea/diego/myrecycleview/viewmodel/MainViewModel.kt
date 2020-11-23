@@ -10,13 +10,16 @@ class MainViewModel: ViewModel() {
     private val respositorio = Single.characterRepository
     private var cont = 2
     val viewMLD = MutableLiveData<Characters>()
+    val viewErrorMLD = MutableLiveData<Error>()
 
     fun getAll(){
         respositorio.getCharacters(object : BaseCallback<Characters> {
             override fun onResult(result: Characters) {
                 viewMLD.value = result
             }
-            override fun onError(error: Error) {}
+            override fun onError(error: Error) {
+                viewErrorMLD.value = error
+            }
         })
     }
 
@@ -27,7 +30,9 @@ class MainViewModel: ViewModel() {
                 viewMLD.value = result
                 cont = cont + 1
             }
-            override fun onError(error: Error) {}
+            override fun onError(error: Error) {
+                viewErrorMLD.value = error
+            }
         }, num)
     }
 }

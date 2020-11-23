@@ -1,13 +1,10 @@
 package guinea.diego.myrecycleview
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import guinea.diego.myrecycleview.local.DB_Helper
 import guinea.diego.myrecycleview.modelo.*
-import guinea.diego.myrecycleview.servicios.BaseCallback
-import guinea.diego.myrecycleview.servicios.Connectivity
 import guinea.diego.myrecycleview.servicios.getNumericValues
 import guinea.diego.myrecycleview.viewmodel.OriginViewModel
 import kotlinx.android.synthetic.main.origin_detall.*
@@ -36,21 +33,24 @@ class OriginDetail: AppCompatActivity() {
     }
 
     fun Observer(name: String?){
-        if(Connectivity().isConnected(this)){
-            viewModel.viewMLD.observe(this, Observer {
-                handler.importDataUrl(it)
-                importData(it)
-            })
-        }else{
-            name?.let { onFaild(it) }
-        }
+        viewModel.viewMLD.observe(this, Observer {
+            handler.importDataUrl(it)
+            importData(it)
+        })
+        viewModel.viewErrorMLD.observe(this, Observer {
+            val valorURl = name?.let { handler.readUrlData(it)}
+            if (it != null && valorURl == null){
+                error_txt.text = it.toString()
+            }else{
+                onFaild(valorURl)
+            }
+        })
     }
 
-    private fun onFaild(planet: String) {
-        val response = handler.readUrlData(planet)
-            name_planet.text = response.name
-            type_planet.text = response.type
-            dimension.text = response.dimension
+    private fun onFaild(valorUrl: UrlOrigin?) {
+            name_planet.text = valorUrl?.name
+            type_planet.text = valorUrl?.type
+            dimension.text = valorUrl?.dimension
     }
 
     private fun importData(result: UrlOrigin) {
