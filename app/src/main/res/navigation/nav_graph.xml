@@ -30,6 +30,6 @@
     </fragment>
     <activity
         android:id="@+id/originDetail"
-        android:name="guinea.diego.myrecycleview.OriginDetail"
+        android:name="guinea.diego.myrecycleview.ui.OriginDetail"
         android:label="OriginDetail" />
 </navigation>

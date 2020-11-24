@@ -1,4 +1,4 @@
-package guinea.diego.myrecycleview.servicios
+package guinea.diego.myrecycleview.utils
 
 interface BaseCallback<T> {
     fun onResult(result: T)

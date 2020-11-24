@@ -1,4 +1,4 @@
-package guinea.diego.myrecycleview
+package guinea.diego.myrecycleview.ui.adapter
 
 import android.content.Context
 import android.content.Intent
@@ -9,45 +9,53 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import guinea.diego.myrecycleview.modelo.CharacterRM
-import guinea.diego.myrecycleview.modelo.Characters
+import guinea.diego.myrecycleview.ui.InfoCharacter
+import guinea.diego.myrecycleview.R
+import guinea.diego.myrecycleview.data.modelo.CharacterRM
 import kotlinx.android.synthetic.main.characters.view.*
+import kotlin.collections.ArrayList
 
 
 class RecyclerAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerAdapter.BaseViewHolder>(), Filterable {
-
     private var characters: ArrayList<CharacterRM> = arrayListOf()
+    private var filterCharacter: ArrayList<CharacterRM> = arrayListOf()
 
-     override fun getFilter(): Filter {
+    override fun getFilter(): Filter {
         return object : Filter(){
             override fun performFiltering(constraint: CharSequence?): FilterResults {
-                 val allCharacters: ArrayList<CharacterRM> = arrayListOf()
-                if(constraint.toString().isEmpty()){
-                    allCharacters.addAll(characters)
+                val filterResults = FilterResults()
+                if(constraint == null || constraint.length < 0){
+                    filterResults.count = filterCharacter.size
+                    filterResults.values = filterCharacter
                 }else{
-                    for (oneCharacter: CharacterRM in characters){
-                        if (oneCharacter.name.toLowerCase().contains(constraint.toString().toLowerCase())){
-                            allCharacters.add(oneCharacter)
+                    var searchString = constraint.toString().toLowerCase()
+                    val itemModal = ArrayList<CharacterRM>()
+                    for(item in filterCharacter){
+                        if(item.name!!.toLowerCase().contains(searchString) || item.species!!.toLowerCase().contains(searchString)){
+                            itemModal.add(item)
                         }
                     }
+                    filterResults.count = itemModal.size
+                    filterResults.values = itemModal
                 }
-                val filterResult = FilterResults()
-                filterResult.values = allCharacters
-                return  filterResult
+                return filterResults
             }
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                characters.clear()
-                if (results != null) {
-                    characters.addAll(results.values as Collection<CharacterRM>)
-                }
+                characters = results!!.values as ArrayList<CharacterRM>
                 notifyDataSetChanged()
             }
         }
     }
 
-    fun setData(character: Characters) {
+    fun setData(character: ArrayList<CharacterRM>) {
         characters.clear()
-        characters.addAll(character.results)
+        characters.addAll(character)
+        filterCharacter = characters
+        notifyDataSetChanged()
+    }
+    fun addData(character: ArrayList<CharacterRM>){
+        characters.clear()
+        characters.addAll(character)
         notifyDataSetChanged()
     }
 
@@ -83,10 +91,7 @@ class RecyclerAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
             Glide.with(image.context)
                 .load(character.image)
                 .into(image)
-
-
         }
-
         init {
             //TODO esto debería llamarse desde el activity, mediante un handler o algo similar.
             //Evento de click en un item del recyclerView
