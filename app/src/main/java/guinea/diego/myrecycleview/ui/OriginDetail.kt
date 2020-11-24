@@ -6,15 +6,16 @@ import androidx.lifecycle.Observer
 import guinea.diego.myrecycleview.R
 import guinea.diego.myrecycleview.data.local.DB_Helper
 import guinea.diego.myrecycleview.data.modelo.*
+import guinea.diego.myrecycleview.ui.viewmodel.MainViewModel
 import guinea.diego.myrecycleview.utils.getNumericValues
 import guinea.diego.myrecycleview.ui.viewmodel.OriginViewModel
 import kotlinx.android.synthetic.main.origin_detall.*
-
+import org.koin.android.ext.android.inject
 
 
 class OriginDetail: AppCompatActivity() {
 
-    private val viewModel = OriginViewModel()
+    private val viewModel by inject<OriginViewModel>()
     lateinit var handler: DB_Helper
 
         override fun onCreate(savedInstanceState: Bundle?) {

@@ -65,6 +65,13 @@ dependencies {
 
     implementation 'com.airbnb.android:lottie:3.4.4'
 
-    implementation 'org.koin:koin-core:2.2.0'
+    def koin_version = "2.2.0"
+    //implementation 'org.koin:koin-core:2.2.0'
+    // Koin for Android
+    implementation "org.koin:koin-android:$koin_version"
+    // or Koin for Lifecycle scoping
+    implementation "org.koin:koin-android-scope:$koin_version"
+    // or Koin for Android Architecture ViewModel
+    implementation "org.koin:koin-android-viewmodel:$koin_version"
 
 }
