@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.Color
 import androidx.core.graphics.drawable.toDrawable
 import guinea.diego.myrecycleview.R
-import java.lang.Double
 
 
 fun Context.showLoadingDialog(): Dialog{
@@ -25,7 +24,7 @@ fun String.getNumericValues(): String {
     for (i in this.indices) {
         var numeric = true
         try {
-            val num = Double.parseDouble(this[i].toString())
+            val num =this[i].toString().toDouble()
         } catch (e: NumberFormatException) {
             numeric = false
         }

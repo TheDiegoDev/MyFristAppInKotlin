@@ -25,8 +25,8 @@ class RetrofitInitializer(repo: String) {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    fun characterService() = retrofit.create(CharacterService::class.java)!!
-    fun OriginService() = retrofit.create(OriginService::class.java)!!
-    fun PageCharacters() = retrofit.create(PageService::class.java)!!
-    fun PersonId() = retrofit.create(PersonService::class.java)!!
+    fun characterService() = retrofit.create(CharacterService::class.java)
+    fun OriginService() = retrofit.create(OriginService::class.java)
+    fun PageCharacters() = retrofit.create(PageService::class.java)
+    fun PersonId() = retrofit.create(PersonService::class.java)
 }
