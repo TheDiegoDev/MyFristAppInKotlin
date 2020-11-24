@@ -19,11 +19,12 @@ import guinea.diego.myrecycleview.ui.adapter.RecyclerAdapter
 import guinea.diego.myrecycleview.utils.showLoadingDialog
 import guinea.diego.myrecycleview.ui.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.android.ext.android.inject
 import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
-    private val viewModel = MainViewModel()
+    private val viewModel by inject<MainViewModel>()
     private var listAdapter: RecyclerAdapter? = null
     private var mainCharacters: ArrayList<CharacterRM> = arrayListOf()
     lateinit var handler: DB_Helper
@@ -36,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         handler = DB_Helper(this)
         showDialog()
         initAdapter()
+
     }
 
     private fun initAdapter() {

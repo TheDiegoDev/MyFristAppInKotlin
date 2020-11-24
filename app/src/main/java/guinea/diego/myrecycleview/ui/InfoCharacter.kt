@@ -10,10 +10,11 @@ import guinea.diego.myrecycleview.data.local.DB_Helper
 import guinea.diego.myrecycleview.data.modelo.CharacterRM
 import guinea.diego.myrecycleview.ui.viewmodel.InfoViewModel
 import kotlinx.android.synthetic.main.info_character.*
+import org.koin.android.ext.android.inject
 
 class InfoCharacter : AppCompatActivity() {
 
-    private val viewModel = InfoViewModel()
+    private val viewModel by inject<InfoViewModel>()
     lateinit var handler: DB_Helper
     private var dataBaseCharacters: ArrayList<CharacterRM> = ArrayList()
 
