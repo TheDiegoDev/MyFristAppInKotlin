@@ -7,6 +7,7 @@ import androidx.core.graphics.drawable.toDrawable
 import guinea.diego.myrecycleview.R
 
 
+
 fun Context.showLoadingDialog(): Dialog{
         val progressDialog = Dialog(this)
         progressDialog.let {
