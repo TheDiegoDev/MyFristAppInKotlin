@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/app_bar_switch"
+        android:title="Alive"
+        app:actionLayout="@layout/switch_item"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/spinner"
+        android:title=""
+        app:actionLayout="@layout/spinner_item"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/item2"
+        android:title="Filtrar contenido" />
+    <item
+        android:id="@+id/borrarfiltro"
+        android:title="Borrar filtros"/>
+
+</menu>

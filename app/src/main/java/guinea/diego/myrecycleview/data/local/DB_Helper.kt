@@ -13,7 +13,6 @@ class DB_Helper(context: Context):SQLiteOpenHelper(context,
     versionDB
 ) {
     private var characters: ArrayList<CharacterRM> = arrayListOf()
-    private var id: Int? = null
 
     companion object{
         internal val dbName = "RickMortyDB"
@@ -29,7 +28,6 @@ class DB_Helper(context: Context):SQLiteOpenHelper(context,
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
 
     }
-
 
     fun importDataUrl(response: UrlOrigin){
         val db: SQLiteDatabase = writableDatabase
@@ -54,6 +52,31 @@ class DB_Helper(context: Context):SQLiteOpenHelper(context,
             return false
         }
         return true
+    }
+      fun filterData(status: String/*, specie:String*/): ArrayList<CharacterRM>{
+         val list: ArrayList<CharacterRM> = arrayListOf()
+         list.clear()
+         val db = this.readableDatabase
+         val query = "Select * from persons WHERE status == \"$status\"" // && species == "$specie"
+         val result = db.rawQuery(query, null)
+         if (result.moveToFirst()) {
+             do {
+                 val caracteres = CharacterRM(null, null,null,null, null,null,null,
+                     Data(null,null),Data(null,null))
+                 caracteres.id =   result.getInt(result.getColumnIndex("id"))
+                 caracteres.name = result.getString(result.getColumnIndex("name"))
+                 caracteres.species = result.getString(result.getColumnIndex("species"))
+                 caracteres.gender  = result.getString(result.getColumnIndex("gender"))
+                 caracteres.image = result.getString(result.getColumnIndex("image"))
+                 caracteres.location?.name= result.getString(result.getColumnIndex("location"))
+                 caracteres.origin?.name = result.getString(result.getColumnIndex("origen"))
+                 caracteres.status = result.getString(result.getColumnIndex("status"))
+                 caracteres.type = result.getString(result.getColumnIndex("type"))
+                 list.add(caracteres)
+             }
+             while (result.moveToNext())
+         }
+          return  list
     }
     fun readUrlData(name: String): UrlOrigin {
         val dataUrl = UrlOrigin(null, null,null,null)
