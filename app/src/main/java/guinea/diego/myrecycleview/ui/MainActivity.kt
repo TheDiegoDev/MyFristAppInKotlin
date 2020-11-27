@@ -69,6 +69,7 @@ class MainActivity : AppCompatActivity() {
             else { status = "Dead" }
             when (it.itemId) {
                 R.id.item2 -> filterData(status/*, spinner.selectedItem.toString()*/)
+                R.id.borrarfiltro -> initAdapter()
             }
             true
         }

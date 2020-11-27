@@ -14,5 +14,8 @@
     <item
         android:id="@+id/item2"
         android:title="Filtrar contenido" />
+    <item
+        android:id="@+id/borrarfiltro"
+        android:title="Borrar filtros"/>
 
 </menu>
