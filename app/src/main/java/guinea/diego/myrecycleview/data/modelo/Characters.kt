@@ -37,7 +37,7 @@ data class UrlOrigin(
     var dimension: String?): Serializable
 
 
-class Characters(val results: List<CharacterRM>)
+class Characters(var results: List<CharacterRM>)
 
 
 

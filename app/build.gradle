@@ -69,5 +69,6 @@ dependencies {
     implementation 'org.koin:koin-android:2.2.0'
     implementation 'org.koin:koin-android-scope:2.2.0'
     implementation 'org.koin:koin-android-viewmodel:2.2.0'
-
+   // implementation "org.koin:koin-androidx-viewmodel:2.2.0"
+   // implementation 'org.koin:koin-androidx-scope:2.2.0'
 }

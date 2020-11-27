@@ -7,6 +7,9 @@ import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.AdapterView
+import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
@@ -19,10 +22,15 @@ import guinea.diego.myrecycleview.ui.adapter.RecyclerAdapter
 import guinea.diego.myrecycleview.utils.showLoadingDialog
 import guinea.diego.myrecycleview.ui.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.info_character.*
+import kotlinx.android.synthetic.main.spinner_item.*
+import kotlinx.android.synthetic.main.switch_item.*
 import org.koin.android.ext.android.inject
 import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var toggle: ActionBarDrawerToggle
 
     private val viewModel by inject<MainViewModel>()
     private var listAdapter: RecyclerAdapter? = null
@@ -31,20 +39,52 @@ class MainActivity : AppCompatActivity() {
     private var dataBaseCharacters: ArrayList<CharacterRM> = ArrayList()
     private var loadingDialog: Dialog? = null
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        drawerConfiguration()
         handler = DB_Helper(this)
         showDialog()
         initAdapter()
 
     }
 
+    private fun drawerConfiguration() {
+        var status: String
+        toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        navView.setNavigationItemSelectedListener {
+//            spinner.onItemClickListener = object : AdapterView.OnItemSelectedListener{
+//                override fun onNothingSelected(parent: AdapterView<*>?) {
+//                }
+//
+//                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+//
+//                }
+//            }
+            if (checkBox.isChecked) { status = "Alive" }
+            else { status = "Dead" }
+            when (it.itemId) {
+                R.id.item2 -> filterData(status/*, spinner.selectedItem.toString()*/)
+            }
+            true
+        }
+    }
+
+    private fun filterData(status: String/*, especie: String*/) {
+        val filtro = handler.filterData(status/*, especie*/)
+        (recyclerView.adapter as RecyclerAdapter).setData(filtro)
+    }
+
     private fun initAdapter() {
         listAdapter = RecyclerAdapter(this)
         recyclerView.adapter = listAdapter
-         val layoutRecycler = StaggeredGridLayoutManager(
-            1, StaggeredGridLayoutManager.VERTICAL)
+        val layoutRecycler = StaggeredGridLayoutManager(
+            1, StaggeredGridLayoutManager.VERTICAL
+        )
         recyclerView.layoutManager = layoutRecycler
         recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -52,9 +92,9 @@ class MainActivity : AppCompatActivity() {
         viewModel.getAll()
         Observer()
 
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (recyclerView.canScrollVertically(1) && newState==RecyclerView.SCROLL_STATE_IDLE) {
+                if (recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
                     viewModel.getPageCharacters()
                 }
                 super.onScrollStateChanged(recyclerView, newState)
@@ -62,32 +102,32 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun Observer(){
-            viewModel.viewMLD.observe(this, Observer {
-                onResp(it)
-            })
-            viewModel.viewErrorMLD.observe(this, Observer {
-                if (handler.readCharactersData() == null && it != null){
-                    stopAnimacion()
-                    errorTxt.text = it.toString()
-                }else{
-                    ShowDataBase()
-                }
-            })
+    private fun Observer() {
+        viewModel.viewMLD.observe(this, Observer {
+            onResp(it)
+        })
+        viewModel.viewErrorMLD.observe(this, Observer {
+            if (handler.readCharactersData() == null && it != null) {
+                stopAnimacion()
+                errorTxt.text = it.toString()
+            } else {
+                ShowDataBase()
+            }
+        })
     }
 
     private fun onResp(response: Characters) {
-            response?.let {
-                stopAnimacion()
-                errorTxt.visibility = View.INVISIBLE
-                updateData(response)
-            }
+        response?.let {
+            stopAnimacion()
+            errorTxt.visibility = View.INVISIBLE
+            updateData(response)
+        }
     }
 
     private fun ShowDataBase() {
         stopAnimacion()
-            dataBaseCharacters = handler.readCharactersData()
-            (recyclerView.adapter as RecyclerAdapter).setData(dataBaseCharacters)
+        dataBaseCharacters = handler.readCharactersData()
+        (recyclerView.adapter as RecyclerAdapter).setData(dataBaseCharacters)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -95,30 +135,32 @@ class MainActivity : AppCompatActivity() {
         val menuItem = menu!!.findItem(R.id.action_search)
         val searchView = menuItem.actionView as SearchView
         searchView.maxWidth = Int.MAX_VALUE
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    listAdapter!!.filter.filter(query)
-                    return true
-                }
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    listAdapter!!.filter.filter(newText)
-                    return true
-                }
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                listAdapter!!.filter.filter(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                listAdapter!!.filter.filter(newText)
+                return true
+            }
         })
         return true
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-        if (id == R.id.filter_button){
-          
+        if (toggle.onOptionsItemSelected(item)) {
+            return true
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun hideLoading(){
-        loadingDialog?.let {if(it.isShowing)it.cancel()}
+    private fun hideLoading() {
+        loadingDialog?.let { if (it.isShowing) it.cancel() }
     }
-    private fun showDialog(){
+
+    private fun showDialog() {
         hideLoading()
         loadingDialog = this.showLoadingDialog()
     }
@@ -132,7 +174,7 @@ class MainActivity : AppCompatActivity() {
     private fun updateData(data: Characters) {
         mainCharacters.addAll(data.results)
         handler.importDataCharacters(data)
-        dataBaseCharacters =  handler.readCharactersData()
+        dataBaseCharacters = handler.readCharactersData()
         (recyclerView.adapter as RecyclerAdapter).setData(mainCharacters)
     }
 }

@@ -1,16 +1,17 @@
-package guinea.diego.myrecycleview.ui
+package guinea.diego.myrecycleview.di
 
 import android.app.Application
-import guinea.diego.myrecycleview.ui.viewmodel.viewmodelModule
 import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 
-class MyApp: Application(){
+class KoinApp: Application(){
 
     override fun onCreate() {
         super.onCreate()
         startKoin {
-            androidContext(this@MyApp)
+            androidLogger()
+            androidContext(this@KoinApp)
             modules(viewmodelModule)
         }
     }
